@@ -1,4 +1,4 @@
-const BASE = "http://localhost:5050/api";
+const BASE = import.meta.env.VITE_API_URL || "/api";
 
 export async function fetchRegionsGeoJSON(year: number) {
   const res = await fetch(`${BASE}/regions/${year}`);
