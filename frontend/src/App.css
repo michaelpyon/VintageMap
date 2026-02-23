@@ -20,7 +20,7 @@
   overflow: hidden;
 }
 
-/* Subtle texture overlay */
+/* Subtle radial glow overlay */
 .hero::before {
   content: "";
   position: absolute;
@@ -116,7 +116,72 @@
   position: relative;
 }
 
-/* ── Map Placeholder (empty state) ───────────────── */
+/* ── How It Works ─────────────────────────────────── */
+.how-it-works {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  padding: 2rem 2rem 0;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Connecting line between steps */
+.how-it-works::before {
+  content: "";
+  position: absolute;
+  top: 3.5rem;
+  left: calc(50% - 200px);
+  right: calc(50% - 200px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(197, 165, 90, 0.3) 20%, rgba(197, 165, 90, 0.3) 80%, transparent);
+  pointer-events: none;
+}
+
+.hiw-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hiw-icon {
+  font-size: 1.5rem;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  border: 1px solid rgba(197, 165, 90, 0.3);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(74,44,42,0.1);
+}
+
+.hiw-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.hiw-title {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--oak);
+}
+
+.hiw-desc {
+  font-size: 0.75rem;
+  color: var(--slate);
+}
+
+/* ── Explore Placeholder (empty state) ───────────── */
 .explore-placeholder {
   width: 100%;
   background: var(--parchment);
@@ -125,7 +190,7 @@
 }
 
 .placeholder-top {
-  padding: 2.5rem 2rem 0;
+  padding: 2rem 2rem 0;
   max-width: 900px;
   margin: 0 auto;
 }
@@ -151,29 +216,57 @@
 
 .featured-region-card {
   background: var(--white);
-  border: 1px solid rgba(197, 165, 90, 0.25);
+  border: 1px solid rgba(197, 165, 90, 0.2);
+  border-left-width: 3px;
   border-radius: 10px;
   padding: 1rem 1.1rem;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
   box-shadow: 0 1px 6px rgba(74,44,42,0.07);
-  opacity: 0.75;
-  filter: blur(0.3px);
+  opacity: 0.72;
   position: relative;
   overflow: hidden;
-  transition: opacity 0.2s, filter 0.2s;
   cursor: default;
   pointer-events: none;
 }
 
-.featured-region-card::after {
+/* Shimmer animation for preview cards */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.featured-region-card::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,248,240,0.15) 0%, transparent 60%);
-  pointer-events: none;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 248, 240, 0.35) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2.5s ease-in-out infinite;
+  animation-delay: calc(var(--shimmer-delay, 0) * 0.4s);
 }
+
+/* nth-child delays for staggered shimmer */
+.featured-region-card:nth-child(1) { --shimmer-delay: 0; }
+.featured-region-card:nth-child(2) { --shimmer-delay: 1; }
+.featured-region-card:nth-child(3) { --shimmer-delay: 2; }
+.featured-region-card:nth-child(4) { --shimmer-delay: 3; }
+.featured-region-card:nth-child(5) { --shimmer-delay: 4; }
+.featured-region-card:nth-child(6) { --shimmer-delay: 5; }
+
+/* Wine type color coding — left border */
+.wine-type-red    { border-left-color: #722F37; }
+.wine-type-white  { border-left-color: #C8A96E; }
+.wine-type-rosé   { border-left-color: #E8936A; }
+.wine-type-sparkling { border-left-color: #9DB8C9; }
 
 .fr-header {
   display: flex;
@@ -187,15 +280,28 @@
   line-height: 1;
 }
 
+/* Score badge: circular, wine-red fill */
 .fr-score {
   font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  color: var(--wine-deep);
-  background: rgba(114,47,55,0.09);
-  padding: 0.1rem 0.4rem;
-  border-radius: 4px;
+  color: var(--cream);
+  background: var(--wine-deep);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
 }
+
+/* Score badge per wine type */
+.wine-score-red      { background: #722F37; }
+.wine-score-white    { background: #a07840; color: var(--cream); }
+.wine-score-rosé     { background: #c26a50; }
+.wine-score-sparkling { background: #6a8ea8; }
 
 .fr-name {
   font-family: var(--font-heading);
@@ -210,36 +316,40 @@
   color: var(--slate);
 }
 
+/* Wine type color-coded style badge */
 .fr-style {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.07em;
   font-weight: 600;
-  color: var(--wine-deep);
-  background: rgba(114, 47, 55, 0.08);
   padding: 0.12rem 0.45rem;
   border-radius: 4px;
   width: fit-content;
   margin-top: 0.2rem;
 }
 
+.wine-badge-red     { color: #722F37; background: rgba(114,47,55,0.09); }
+.wine-badge-white   { color: #8a6520; background: rgba(200,169,110,0.15); }
+.wine-badge-rosé    { color: #b85a3a; background: rgba(232,147,106,0.15); }
+.wine-badge-sparkling { color: #4a7a96; background: rgba(157,184,201,0.2); }
+
 /* Center CTA in placeholder */
 .explore-placeholder-inner {
   text-align: center;
-  padding: 2rem 2rem 2.5rem;
+  padding: 1.75rem 2rem 2.25rem;
 }
 
 .explore-placeholder-icon {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   display: block;
-  margin-bottom: 0.6rem;
-  opacity: 0.5;
+  margin-bottom: 0.5rem;
+  opacity: 0.45;
 }
 
 .explore-placeholder-text {
   color: var(--slate);
-  font-size: 1rem;
-  max-width: 300px;
+  font-size: 0.95rem;
+  max-width: 280px;
   margin: 0 auto;
   font-style: italic;
 }
@@ -297,6 +407,9 @@
   .featured-regions-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .how-it-works {
+    gap: 0.5rem;
+  }
 }
 
 @media (max-width: 600px) {
@@ -315,6 +428,9 @@
   .featured-regions-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.65rem;
+  }
+  .how-it-works {
+    padding: 1.5rem 1rem 0;
   }
 }
 

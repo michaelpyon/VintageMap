@@ -6,13 +6,29 @@ import { fetchRegionsGeoJSON, fetchRecommendation } from "./api/client";
 import type { RecommendationResponse } from "./types";
 import "./App.css";
 
-const FEATURED_REGIONS = [
-  { name: "Bordeaux", flag: "🇫🇷", style: "Cabernet Blend", country: "France", score: 96 },
-  { name: "Burgundy", flag: "🇫🇷", style: "Pinot Noir", country: "France", score: 98 },
-  { name: "Napa Valley", flag: "🇺🇸", style: "Cabernet Sauvignon", country: "USA", score: 95 },
-  { name: "Tuscany", flag: "🇮🇹", style: "Sangiovese", country: "Italy", score: 94 },
-  { name: "Barossa Valley", flag: "🇦🇺", style: "Shiraz", country: "Australia", score: 93 },
-  { name: "Rioja", flag: "🇪🇸", style: "Tempranillo", country: "Spain", score: 91 },
+// Wine type categories for color coding
+type WineType = "red" | "white" | "rosé" | "sparkling";
+
+const FEATURED_REGIONS: {
+  name: string;
+  flag: string;
+  style: string;
+  country: string;
+  score: number;
+  type: WineType;
+}[] = [
+  { name: "Bordeaux", flag: "🇫🇷", style: "Cabernet Blend", country: "France", score: 96, type: "red" },
+  { name: "Burgundy", flag: "🇫🇷", style: "Pinot Noir", country: "France", score: 98, type: "red" },
+  { name: "Napa Valley", flag: "🇺🇸", style: "Cabernet Sauvignon", country: "USA", score: 95, type: "red" },
+  { name: "Tuscany", flag: "🇮🇹", style: "Sangiovese", country: "Italy", score: 94, type: "red" },
+  { name: "Barossa Valley", flag: "🇦🇺", style: "Shiraz", country: "Australia", score: 93, type: "red" },
+  { name: "Rioja", flag: "🇪🇸", style: "Tempranillo", country: "Spain", score: 91, type: "red" },
+];
+
+const HOW_IT_WORKS = [
+  { icon: "📅", step: "1", title: "Pick a Year", desc: "Enter any year from 1970–2023" },
+  { icon: "🗺️", step: "2", title: "See the Map", desc: "Explore vintage quality by region" },
+  { icon: "🍷", step: "3", title: "Find Your Wine", desc: "Get a personalised recommendation" },
 ];
 
 function App() {
@@ -23,7 +39,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
-  // Scroll to map when data loads — deterministic, no setTimeout
+  // Scroll to map when data loads
   useEffect(() => {
     if (geojson) {
       document.getElementById("map-section")?.scrollIntoView({ behavior: "smooth" });
@@ -31,7 +47,6 @@ function App() {
   }, [geojson]);
 
   const handleSubmit = useCallback(async (year: number, significance: string) => {
-    // Abort any in-flight request
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
@@ -85,22 +100,40 @@ function App() {
         </section>
       ) : (
         <section id="map-section" className="explore-placeholder">
+          {/* How It Works */}
+          <div className="how-it-works">
+            {HOW_IT_WORKS.map((step) => (
+              <div key={step.step} className="hiw-step">
+                <div className="hiw-icon">{step.icon}</div>
+                <div className="hiw-body">
+                  <span className="hiw-title">{step.title}</span>
+                  <span className="hiw-desc">{step.desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Featured regions preview */}
           <div className="placeholder-top">
             <p className="placeholder-label">✦ Featured Regions ✦</p>
             <div className="featured-regions-grid">
               {FEATURED_REGIONS.map((r) => (
-                <div key={r.name} className="featured-region-card">
+                <div
+                  key={r.name}
+                  className={`featured-region-card wine-type-${r.type}`}
+                >
                   <div className="fr-header">
                     <span className="fr-flag">{r.flag}</span>
-                    <span className="fr-score">{r.score}</span>
+                    <span className={`fr-score wine-score-${r.type}`}>{r.score}</span>
                   </div>
                   <span className="fr-name">{r.name}</span>
                   <span className="fr-country">{r.country}</span>
-                  <span className="fr-style">{r.style}</span>
+                  <span className={`fr-style wine-badge-${r.type}`}>{r.style}</span>
                 </div>
               ))}
             </div>
           </div>
+
           <div className="explore-placeholder-inner">
             <span className="explore-placeholder-icon">🍷</span>
             <p className="explore-placeholder-text">
