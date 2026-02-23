@@ -117,7 +117,7 @@
 }
 
 /* ── Map Placeholder (empty state) ───────────────── */
-.map-placeholder {
+.explore-placeholder {
   width: 100%;
   background: var(--parchment);
   border-top: 1px solid rgba(114,47,55,0.08);
@@ -224,19 +224,19 @@
 }
 
 /* Center CTA in placeholder */
-.map-placeholder-inner {
+.explore-placeholder-inner {
   text-align: center;
   padding: 2rem 2rem 2.5rem;
 }
 
-.map-placeholder-icon {
+.explore-placeholder-icon {
   font-size: 2.5rem;
   display: block;
   margin-bottom: 0.6rem;
   opacity: 0.5;
 }
 
-.map-placeholder-text {
+.explore-placeholder-text {
   color: var(--slate);
   font-size: 1rem;
   max-width: 300px;

@@ -84,7 +84,7 @@ function App() {
           <WineMap geojson={geojson} year={activeYear} />
         </section>
       ) : (
-        <section id="map-section" className="map-placeholder">
+        <section id="map-section" className="explore-placeholder">
           <div className="placeholder-top">
             <p className="placeholder-label">✦ Featured Regions ✦</p>
             <div className="featured-regions-grid">
@@ -101,9 +101,9 @@ function App() {
               ))}
             </div>
           </div>
-          <div className="map-placeholder-inner">
-            <span className="map-placeholder-icon">🍷</span>
-            <p className="map-placeholder-text">
+          <div className="explore-placeholder-inner">
+            <span className="explore-placeholder-icon">🍷</span>
+            <p className="explore-placeholder-text">
               Enter a year above to explore wine regions from that vintage.
             </p>
           </div>
