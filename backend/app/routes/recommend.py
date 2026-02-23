@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from app.services.recommendation import recommend
-from app.services.vintage_service import get_year_range
+from app.services.vintage_service import get_year_range, DataUnavailableError
 
 recommend_bp = Blueprint("recommend", __name__)
 
@@ -28,4 +28,7 @@ def get_recommendation():
     if significance not in VALID_SIGNIFICANCES:
         significance = "other"
 
-    return jsonify(recommend(year, significance))
+    try:
+        return jsonify(recommend(year, significance))
+    except DataUnavailableError as e:
+        return jsonify({"error": str(e)}), 503

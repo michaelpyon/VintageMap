@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import DateInput from "./components/DateInput/DateInput";
 import WineMap from "./components/Map/WineMap";
 import RecommendationCard from "./components/Recommendation/RecommendationCard";
@@ -7,41 +7,44 @@ import type { RecommendationResponse } from "./types";
 import "./App.css";
 
 function App() {
-  const [geojson, setGeojson] = useState<GeoJSON.FeatureCollection | null>(
-    null
-  );
-  const [recommendation, setRecommendation] =
-    useState<RecommendationResponse | null>(null);
+  const [geojson, setGeojson] = useState<GeoJSON.FeatureCollection | null>(null);
+  const [recommendation, setRecommendation] = useState<RecommendationResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeYear, setActiveYear] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const abortRef = useRef<AbortController | null>(null);
 
-  const handleSubmit = useCallback(
-    async (year: number, significance: string) => {
-      setLoading(true);
-      setError(null);
-      setActiveYear(year);
-      try {
-        const [geo, rec] = await Promise.all([
-          fetchRegionsGeoJSON(year),
-          fetchRecommendation(year, significance),
-        ]);
-        setGeojson(geo);
-        setRecommendation(rec);
+  // Scroll to map when data loads — deterministic, no setTimeout
+  useEffect(() => {
+    if (geojson) {
+      document.getElementById("map-section")?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [geojson]);
 
-        setTimeout(() => {
-          document
-            .getElementById("map-section")
-            ?.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "Something went wrong.");
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
+  const handleSubmit = useCallback(async (year: number, significance: string) => {
+    // Abort any in-flight request
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    setLoading(true);
+    setError(null);
+    setActiveYear(year);
+
+    try {
+      const [geo, rec] = await Promise.all([
+        fetchRegionsGeoJSON(year, controller.signal),
+        fetchRecommendation(year, significance, controller.signal),
+      ]);
+      setGeojson(geo);
+      setRecommendation(rec);
+    } catch (e) {
+      if (e instanceof Error && e.name === "AbortError") return;
+      setError(e instanceof Error ? e.message : "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   return (
     <div className="app">
@@ -62,9 +65,21 @@ function App() {
         </div>
       )}
 
-      <section id="map-section" className="map-section">
-        <WineMap geojson={geojson} year={activeYear} />
-      </section>
+      {/* Map section — only rendered when data is loaded */}
+      {geojson ? (
+        <section id="map-section" className="map-section">
+          <WineMap geojson={geojson} year={activeYear} />
+        </section>
+      ) : (
+        <section id="map-section" className="map-placeholder">
+          <div className="map-placeholder-inner">
+            <span className="map-placeholder-icon">🍷</span>
+            <p className="map-placeholder-text">
+              Enter a year above to explore wine regions from that vintage.
+            </p>
+          </div>
+        </section>
+      )}
 
       {recommendation && (
         <section className="recommendation-section">

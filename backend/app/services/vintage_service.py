@@ -1,17 +1,31 @@
 import json
+import logging
 import os
+
+log = logging.getLogger(__name__)
 
 _DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 _vintage_data = None
 _geojson_data = None
 
 
+class DataUnavailableError(Exception):
+    pass
+
+
 def _load_vintage_data():
     global _vintage_data
     if _vintage_data is None:
         path = os.path.join(_DATA_DIR, "vintage", "vintage_data.json")
-        with open(path) as f:
-            _vintage_data = json.load(f)
+        try:
+            with open(path) as f:
+                _vintage_data = json.load(f)
+        except FileNotFoundError:
+            log.error(f"Vintage data file not found: {path}")
+            raise DataUnavailableError("Vintage data file not found.")
+        except json.JSONDecodeError as e:
+            log.error(f"Vintage data file is malformed: {e}")
+            raise DataUnavailableError("Vintage data file is malformed.")
     return _vintage_data
 
 
@@ -19,8 +33,15 @@ def _load_geojson():
     global _geojson_data
     if _geojson_data is None:
         path = os.path.join(_DATA_DIR, "geojson", "wine_regions.geojson")
-        with open(path) as f:
-            _geojson_data = json.load(f)
+        try:
+            with open(path) as f:
+                _geojson_data = json.load(f)
+        except FileNotFoundError:
+            log.error(f"GeoJSON file not found: {path}")
+            raise DataUnavailableError("GeoJSON regions file not found.")
+        except json.JSONDecodeError as e:
+            log.error(f"GeoJSON file is malformed: {e}")
+            raise DataUnavailableError("GeoJSON regions file is malformed.")
     return _geojson_data
 
 

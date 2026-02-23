@@ -118,3 +118,30 @@
     padding: 2rem 1rem;
   }
 }
+
+/* Map placeholder state */
+.map-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  background: var(--parchment, #f5f0e8);
+  border-top: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.map-placeholder-inner {
+  text-align: center;
+  padding: 2rem;
+}
+.map-placeholder-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 0.75rem;
+  opacity: 0.6;
+}
+.map-placeholder-text {
+  color: var(--slate, #666);
+  font-size: 1rem;
+  max-width: 280px;
+  margin: 0 auto;
+}
