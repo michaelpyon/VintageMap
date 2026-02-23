@@ -1,0 +1,41 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --wine-deep: #722f37;
+  --wine-burgundy: #800020;
+  --wine-merlot: #7f171f;
+  --cream: #fff8f0;
+  --parchment: #f5e6d3;
+  --oak: #4a2c2a;
+  --gold: #c5a55a;
+  --slate: #5c5c5c;
+  --white: #ffffff;
+
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-body: "Source Sans 3", "Segoe UI", sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--cream);
+  color: var(--oak);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+#root {
+  width: 100%;
+}

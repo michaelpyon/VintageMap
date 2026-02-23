@@ -1,0 +1,796 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "bordeaux_red",
+        "display_name": "Bordeaux (Red)",
+        "country": "France",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Cabernet Sauvignon",
+          "Merlot",
+          "Cabernet Franc"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -2.0,
+              43.9
+            ],
+            [
+              1.0,
+              43.9
+            ],
+            [
+              1.0,
+              45.9
+            ],
+            [
+              -2.0,
+              45.9
+            ],
+            [
+              -2.0,
+              43.9
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "burgundy_red",
+        "display_name": "Burgundy (Red)",
+        "country": "France",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Pinot Noir"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              4.05,
+              45.25
+            ],
+            [
+              5.55,
+              45.25
+            ],
+            [
+              5.55,
+              48.75
+            ],
+            [
+              4.05,
+              48.75
+            ],
+            [
+              4.05,
+              45.25
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "burgundy_white",
+        "display_name": "Burgundy (White)",
+        "country": "France",
+        "wine_style": "white",
+        "primary_grapes": [
+          "Chardonnay"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              4.05,
+              45.25
+            ],
+            [
+              5.55,
+              45.25
+            ],
+            [
+              5.55,
+              48.75
+            ],
+            [
+              4.05,
+              48.75
+            ],
+            [
+              4.05,
+              45.25
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "champagne",
+        "display_name": "Champagne",
+        "country": "France",
+        "wine_style": "sparkling",
+        "primary_grapes": [
+          "Chardonnay",
+          "Pinot Noir",
+          "Pinot Meunier"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              2.0,
+              48.2
+            ],
+            [
+              6.0,
+              48.2
+            ],
+            [
+              6.0,
+              50.2
+            ],
+            [
+              2.0,
+              50.2
+            ],
+            [
+              2.0,
+              48.2
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "rhone_north",
+        "display_name": "Northern Rhone",
+        "country": "France",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Syrah"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              4.2,
+              44.45
+            ],
+            [
+              5.3999999999999995,
+              44.45
+            ],
+            [
+              5.3999999999999995,
+              45.95
+            ],
+            [
+              4.2,
+              45.95
+            ],
+            [
+              4.2,
+              44.45
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "rhone_south",
+        "display_name": "Southern Rhone",
+        "country": "France",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Grenache",
+          "Syrah",
+          "Mourvedre"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              3.55,
+              43.25
+            ],
+            [
+              6.05,
+              43.25
+            ],
+            [
+              6.05,
+              44.75
+            ],
+            [
+              3.55,
+              44.75
+            ],
+            [
+              3.55,
+              43.25
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "piedmont",
+        "display_name": "Piedmont",
+        "country": "Italy",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Nebbiolo"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              6.75,
+              43.95
+            ],
+            [
+              9.25,
+              43.95
+            ],
+            [
+              9.25,
+              45.45
+            ],
+            [
+              6.75,
+              45.45
+            ],
+            [
+              6.75,
+              43.95
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "tuscany",
+        "display_name": "Tuscany",
+        "country": "Italy",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Sangiovese"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              9.7,
+              42.4
+            ],
+            [
+              12.7,
+              42.4
+            ],
+            [
+              12.7,
+              44.4
+            ],
+            [
+              9.7,
+              44.4
+            ],
+            [
+              9.7,
+              42.4
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "veneto",
+        "display_name": "Veneto",
+        "country": "Italy",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Corvina",
+          "Rondinella"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              9.9,
+              44.75
+            ],
+            [
+              11.9,
+              44.75
+            ],
+            [
+              11.9,
+              46.25
+            ],
+            [
+              9.9,
+              46.25
+            ],
+            [
+              9.9,
+              44.75
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "rioja",
+        "display_name": "Rioja",
+        "country": "Spain",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Tempranillo",
+          "Garnacha"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -4.5,
+              41.75
+            ],
+            [
+              -0.5,
+              41.75
+            ],
+            [
+              -0.5,
+              43.25
+            ],
+            [
+              -4.5,
+              43.25
+            ],
+            [
+              -4.5,
+              41.75
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "ribera_del_duero",
+        "display_name": "Ribera del Duero",
+        "country": "Spain",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Tempranillo"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -5.45,
+              40.85
+            ],
+            [
+              -1.9500000000000002,
+              40.85
+            ],
+            [
+              -1.9500000000000002,
+              42.35
+            ],
+            [
+              -5.45,
+              42.35
+            ],
+            [
+              -5.45,
+              40.85
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "napa_valley",
+        "display_name": "Napa Valley",
+        "country": "USA",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Cabernet Sauvignon"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -123.15,
+              37.5
+            ],
+            [
+              -121.65,
+              37.5
+            ],
+            [
+              -121.65,
+              39.5
+            ],
+            [
+              -123.15,
+              39.5
+            ],
+            [
+              -123.15,
+              37.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "sonoma",
+        "display_name": "Sonoma",
+        "country": "USA",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Pinot Noir",
+          "Chardonnay"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -123.65,
+              37.4
+            ],
+            [
+              -122.15,
+              37.4
+            ],
+            [
+              -122.15,
+              39.4
+            ],
+            [
+              -123.65,
+              39.4
+            ],
+            [
+              -123.65,
+              37.4
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "willamette",
+        "display_name": "Willamette Valley",
+        "country": "USA",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Pinot Noir"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -124.2,
+              43.5
+            ],
+            [
+              -122.2,
+              43.5
+            ],
+            [
+              -122.2,
+              46.5
+            ],
+            [
+              -124.2,
+              46.5
+            ],
+            [
+              -124.2,
+              43.5
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "barossa",
+        "display_name": "Barossa Valley",
+        "country": "Australia",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Shiraz"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              137.9,
+              -35.25
+            ],
+            [
+              139.9,
+              -35.25
+            ],
+            [
+              139.9,
+              -33.75
+            ],
+            [
+              137.9,
+              -33.75
+            ],
+            [
+              137.9,
+              -35.25
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "mosel",
+        "display_name": "Mosel",
+        "country": "Germany",
+        "wine_style": "white",
+        "primary_grapes": [
+          "Riesling"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              5.75,
+              49.15
+            ],
+            [
+              8.25,
+              49.15
+            ],
+            [
+              8.25,
+              50.65
+            ],
+            [
+              5.75,
+              50.65
+            ],
+            [
+              5.75,
+              49.15
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "douro",
+        "display_name": "Douro",
+        "country": "Portugal",
+        "wine_style": "fortified",
+        "primary_grapes": [
+          "Touriga Nacional",
+          "Touriga Franca"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -9.0,
+              40.2
+            ],
+            [
+              -6.0,
+              40.2
+            ],
+            [
+              -6.0,
+              42.2
+            ],
+            [
+              -9.0,
+              42.2
+            ],
+            [
+              -9.0,
+              40.2
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "mendoza",
+        "display_name": "Mendoza",
+        "country": "Argentina",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Malbec"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -70.0,
+              -35.0
+            ],
+            [
+              -67.0,
+              -35.0
+            ],
+            [
+              -67.0,
+              -32.0
+            ],
+            [
+              -70.0,
+              -32.0
+            ],
+            [
+              -70.0,
+              -35.0
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "stellenbosch",
+        "display_name": "Stellenbosch",
+        "country": "South Africa",
+        "wine_style": "red",
+        "primary_grapes": [
+          "Cabernet Sauvignon",
+          "Pinotage"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              17.8,
+              -34.65
+            ],
+            [
+              19.8,
+              -34.65
+            ],
+            [
+              19.8,
+              -33.15
+            ],
+            [
+              17.8,
+              -33.15
+            ],
+            [
+              17.8,
+              -34.65
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "region_key": "marlborough",
+        "display_name": "Marlborough",
+        "country": "New Zealand",
+        "wine_style": "white",
+        "primary_grapes": [
+          "Sauvignon Blanc"
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              172.3,
+              -42.5
+            ],
+            [
+              175.3,
+              -42.5
+            ],
+            [
+              175.3,
+              -40.5
+            ],
+            [
+              172.3,
+              -40.5
+            ],
+            [
+              172.3,
+              -42.5
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

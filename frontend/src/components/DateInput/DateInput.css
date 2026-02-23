@@ -1,0 +1,131 @@
+.date-input {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.date-input-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+}
+
+.field label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.field input,
+.field select {
+  padding: 0.7rem 1rem;
+  border: 2px solid rgba(255, 248, 240, 0.3);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  min-width: 180px;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.field input::placeholder {
+  color: rgba(255, 248, 240, 0.4);
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.field select option {
+  background: var(--wine-deep);
+  color: var(--cream);
+}
+
+.field-error {
+  font-size: 0.8rem;
+  color: #ffb4b4;
+}
+
+.submit-btn {
+  padding: 0.85rem 2.5rem;
+  background: var(--gold);
+  color: var(--oak);
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  min-width: 240px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #d4b56a;
+  transform: translateY(-1px);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(74, 44, 42, 0.3);
+  border-top-color: var(--oak);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Remove number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@media (max-width: 480px) {
+  .date-input-row {
+    flex-direction: column;
+    width: 100%;
+  }
+  .field input,
+  .field select {
+    min-width: auto;
+    width: 100%;
+  }
+  .submit-btn {
+    width: 100%;
+  }
+}

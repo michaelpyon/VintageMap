@@ -1,0 +1,183 @@
+.rec-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.rec-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--wine-deep);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.rec-message {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--slate);
+  padding: 2rem;
+}
+
+/* Wine Card */
+.wine-card {
+  background: var(--white);
+  border: 1px solid var(--parchment);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.wine-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.wine-card-primary {
+  border-color: var(--gold);
+  border-width: 2px;
+  padding: 2rem;
+}
+
+.wine-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.wine-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.wine-card-region {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: var(--oak);
+  margin: 0;
+}
+
+.wine-card-primary .wine-card-region {
+  font-size: 1.7rem;
+}
+
+.wine-card-country {
+  font-size: 0.9rem;
+  color: var(--slate);
+}
+
+.wine-card-style {
+  display: inline-block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: var(--wine-deep);
+  background: rgba(114, 47, 55, 0.08);
+  padding: 0.15rem 0.6rem;
+  border-radius: 4px;
+  width: fit-content;
+  margin-top: 0.3rem;
+}
+
+/* Score Badge */
+.score-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--wine-deep);
+  color: var(--cream);
+  flex-shrink: 0;
+}
+
+.wine-card-primary .score-badge {
+  width: 76px;
+  height: 76px;
+}
+
+.score-number {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.wine-card-primary .score-number {
+  font-size: 1.7rem;
+}
+
+.score-label {
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+/* Card Text */
+.wine-card-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--oak);
+  margin-bottom: 0.75rem;
+}
+
+.wine-card-grapes {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--slate);
+  margin-bottom: 0.5rem;
+}
+
+.wine-card-suggestion {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--wine-deep);
+  margin-bottom: 0.5rem;
+}
+
+.wine-card-notable {
+  font-size: 0.85rem;
+  color: var(--slate);
+  border-top: 1px solid var(--parchment);
+  padding-top: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.notable-label {
+  font-weight: 600;
+  color: var(--oak);
+}
+
+/* Alternatives */
+.alt-title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  color: var(--oak);
+  text-align: center;
+  margin: 2rem 0 1rem;
+}
+
+.alt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 600px) {
+  .wine-card-primary {
+    padding: 1.25rem;
+  }
+  .wine-card-region {
+    font-size: 1.2rem;
+  }
+  .wine-card-primary .wine-card-region {
+    font-size: 1.4rem;
+  }
+  .alt-grid {
+    grid-template-columns: 1fr;
+  }
+}
