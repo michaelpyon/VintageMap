@@ -37,6 +37,10 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [activeYear, setActiveYear] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Controls fade-out of content during transition
+  const [fading, setFading] = useState(false);
+  // Controls stagger key for re-animation on new data
+  const [animKey, setAnimKey] = useState(0);
   const abortRef = useRef<AbortController | null>(null);
 
   // Scroll to map when data loads
@@ -51,9 +55,18 @@ function App() {
     const controller = new AbortController();
     abortRef.current = controller;
 
+    // Start fade-out of existing content
+    setFading(true);
     setLoading(true);
     setError(null);
     setActiveYear(year);
+
+    // After 150ms fade-out, clear old data
+    setTimeout(() => {
+      setGeojson(null);
+      setRecommendation(null);
+      setFading(false);
+    }, 150);
 
     try {
       const [geo, rec] = await Promise.all([
@@ -62,6 +75,7 @@ function App() {
       ]);
       setGeojson(geo);
       setRecommendation(rec);
+      setAnimKey((k) => k + 1); // trigger re-animation
     } catch (e) {
       if (e instanceof Error && e.name === "AbortError") return;
       setError(e instanceof Error ? e.message : "Something went wrong.");
@@ -93,10 +107,18 @@ function App() {
         </div>
       )}
 
-      {/* Map section — only rendered when data is loaded */}
+      {/* Map section — only rendered when data is loaded or loading */}
       {geojson ? (
-        <section id="map-section" className="map-section">
+        <section
+          id="map-section"
+          className={`map-section${fading ? " section-fading" : ""}`}
+        >
           <WineMap geojson={geojson} year={activeYear} />
+        </section>
+      ) : loading ? (
+        /* Skeleton map placeholder during load */
+        <section id="map-section" className="map-section skeleton-map">
+          <div className="skeleton-map-inner" />
         </section>
       ) : (
         <section id="map-section" className="explore-placeholder">
@@ -143,11 +165,25 @@ function App() {
         </section>
       )}
 
-      {recommendation && (
-        <section className="recommendation-section">
-          <RecommendationCard data={recommendation} />
+      {/* Recommendation section: skeleton while loading, real data when ready */}
+      {loading && !recommendation ? (
+        <section className="recommendation-section skeleton-rec-section">
+          <div className="skeleton-rec-title" />
+          <div className="skeleton-card skeleton-card-primary" />
+          <div className="skeleton-alt-row">
+            <div className="skeleton-card" />
+            <div className="skeleton-card" />
+            <div className="skeleton-card" />
+          </div>
         </section>
-      )}
+      ) : recommendation ? (
+        <section
+          key={animKey}
+          className={`recommendation-section${fading ? " section-fading" : ""}`}
+        >
+          <RecommendationCard data={recommendation} year={activeYear} />
+        </section>
+      ) : null}
 
       <footer className="footer">
         <div className="footer-ornament">❧</div>

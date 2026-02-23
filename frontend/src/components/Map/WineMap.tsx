@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { MapContainer, TileLayer, CircleMarker, Tooltip, useMap } from "react-leaflet";
+import L from "leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import Legend from "./Legend";
 import "./WineMap.css";
 
@@ -53,11 +54,31 @@ function centroid(coords: number[][][]): [number, number] {
     lng += pt[0];
     lat += pt[1];
   }
-  // Return [lat, lng] for Leaflet
   return [lat / ring.length, lng / ring.length];
 }
 
-// Fit map to world bounds when year changes so all markers are visible
+/** Create a custom wine bottle DivIcon */
+function createWineBottleIcon(score: number): L.DivIcon {
+  const color = getColor(score);
+  // Wine bottle SVG: capsule top, neck, body with label highlight
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 36" width="20" height="36">
+    <rect x="7" y="0" width="6" height="4" rx="2" fill="${color}" opacity="0.9"/>
+    <rect x="7.5" y="4" width="5" height="7" fill="${color}"/>
+    <path d="M4.5 11 Q3 13 3 15 L3 30 Q3 33 5.5 33 L14.5 33 Q17 33 17 30 L17 15 Q17 13 15.5 11 Z" fill="${color}"/>
+    <rect x="6" y="18" width="8" height="9" rx="1.5" fill="rgba(255,255,255,0.22)"/>
+    <rect x="6.5" y="10" width="7" height="2.5" rx="0.5" fill="${color}" opacity="0.6"/>
+  </svg>`;
+
+  return L.divIcon({
+    html: svg,
+    className: "wine-bottle-marker",
+    iconSize: [20, 36],
+    iconAnchor: [10, 36],
+    popupAnchor: [0, -38],
+  });
+}
+
+// Fit map to world bounds when year changes
 function FitWorld({ trigger }: { trigger: number | null }) {
   const map = useMap();
   useEffect(() => {
@@ -68,7 +89,13 @@ function FitWorld({ trigger }: { trigger: number | null }) {
   return null;
 }
 
-function RegionMarkers({ geojson }: { geojson: GeoJSON.FeatureCollection }) {
+function RegionMarkers({
+  geojson,
+  year,
+}: {
+  geojson: GeoJSON.FeatureCollection;
+  year: number | null;
+}) {
   return (
     <>
       {geojson.features.map((feature) => {
@@ -76,16 +103,15 @@ function RegionMarkers({ geojson }: { geojson: GeoJSON.FeatureCollection }) {
         const key = (props.region_key as string) || Math.random().toString();
         const score = (props.score as number) || 0;
         const tier = (props.quality_tier as string) || "no_data";
-        const name = (props.display_name as string) || (props.region_key as string) || "Unknown";
+        const name =
+          (props.display_name as string) ||
+          (props.region_key as string) ||
+          "Unknown";
         const country = (props.country as string) || "";
-        const desc = (props.description as string) || "";
+        const wineStyle = (props.wine_style as string) || "";
         const grapes = (props.primary_grapes as string[]) || [];
-        const color = getColor(score);
 
-        if (
-          !feature.geometry ||
-          feature.geometry.type !== "Polygon"
-        ) {
+        if (!feature.geometry || feature.geometry.type !== "Polygon") {
           return null;
         }
 
@@ -93,52 +119,36 @@ function RegionMarkers({ geojson }: { geojson: GeoJSON.FeatureCollection }) {
           (feature.geometry as GeoJSON.Polygon).coordinates
         );
 
+        const icon = createWineBottleIcon(score);
+
         return (
-          <CircleMarker
-            key={key}
-            center={[lat, lng]}
-            radius={18}
-            pathOptions={{
-              fillColor: color,
-              fillOpacity: 0.85,
-              color: "#4A2C2A",
-              weight: 2,
-            }}
-            eventHandlers={{
-              mouseover: (e) => {
-                e.target.setStyle({ radius: 22, fillOpacity: 0.98, weight: 3, color: "#722F37" });
-              },
-              mouseout: (e) => {
-                e.target.setStyle({ radius: 18, fillOpacity: 0.85, weight: 2, color: "#4A2C2A" });
-              },
-            }}
-          >
-            <Tooltip
-              className="region-tooltip"
-              direction="top"
-              offset={[0, -16]}
-              sticky
-            >
-              <div className="tooltip-content">
-                <div className="tooltip-header">
-                  <strong>{name}</strong>
+          <Marker key={key} position={[lat, lng]} icon={icon}>
+            <Popup className="wine-popup">
+              <div className="wine-popup-content">
+                <div className="wp-header">
+                  <strong className="wp-name">{name}</strong>
                   {score > 0 && (
-                    <span className="tooltip-score">{score}/100</span>
+                    <span className="wp-score">{score}/100</span>
                   )}
                 </div>
-                <div className="tooltip-sub">{country}</div>
+                {country && <div className="wp-country">{country}</div>}
+                {wineStyle && (
+                  <div className="wp-style">{wineStyle}</div>
+                )}
                 {score > 0 && (
-                  <div className="tooltip-tier">
+                  <div className="wp-tier">
                     {stars(score)} {tierLabel(tier)}
                   </div>
                 )}
-                {desc && <div className="tooltip-desc">{desc}</div>}
                 {grapes.length > 0 && (
-                  <div className="tooltip-grapes">{grapes.join(", ")}</div>
+                  <div className="wp-grapes">{grapes.join(", ")}</div>
+                )}
+                {year && (
+                  <div className="wp-vintage">Best vintage: {year}</div>
                 )}
               </div>
-            </Tooltip>
-          </CircleMarker>
+            </Popup>
+          </Marker>
         );
       })}
     </>
@@ -163,7 +173,7 @@ export default function WineMap({ geojson, year }: Props) {
       >
         <TileLayer url={TILE_URL} attribution={TILE_ATTR} />
         <FitWorld trigger={year} />
-        {geojson && year && <RegionMarkers geojson={geojson} />}
+        {geojson && year && <RegionMarkers geojson={geojson} year={year} />}
         {year && <Legend />}
       </MapContainer>
     </div>

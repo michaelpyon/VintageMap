@@ -1,4 +1,11 @@
-const BASE = import.meta.env.VITE_API_URL || "/api";
+const isLocalhost =
+  typeof window !== "undefined" &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1");
+
+const BASE =
+  import.meta.env.VITE_API_URL ||
+  (isLocalhost ? "/api" : "https://vintagemap-production.up.railway.app/api");
 
 export async function fetchRegionsGeoJSON(year: number, signal?: AbortSignal) {
   const res = await fetch(`${BASE}/regions/${year}`, { signal });
@@ -12,7 +19,11 @@ export async function fetchVintage(year: number, signal?: AbortSignal) {
   return res.json();
 }
 
-export async function fetchRecommendation(year: number, significance: string, signal?: AbortSignal) {
+export async function fetchRecommendation(
+  year: number,
+  significance: string,
+  signal?: AbortSignal
+) {
   const res = await fetch(
     `${BASE}/recommend?year=${year}&significance=${significance}`,
     { signal }

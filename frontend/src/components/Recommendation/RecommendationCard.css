@@ -18,15 +18,37 @@
   padding: 2rem;
 }
 
+/* Stagger fade-in animation for cards */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Wine Card */
 .wine-card {
   background: var(--white);
   border: 1px solid var(--parchment);
+  border-left: 3px solid var(--wine-deep);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   transition: transform 0.2s, box-shadow 0.2s;
+  animation: cardFadeIn 0.4s ease-out both;
+  position: relative;
+  overflow: hidden;
 }
+
+/* Wine type left-border color coding */
+.wine-card-type-red     { border-left-color: #722F37; }
+.wine-card-type-white   { border-left-color: #C8A96E; }
+.wine-card-type-rosé    { border-left-color: #E8936A; }
+.wine-card-type-sparkling { border-left-color: #9DB8C9; }
 
 .wine-card:hover {
   transform: translateY(-2px);
@@ -34,8 +56,10 @@
 }
 
 .wine-card-primary {
-  border-color: var(--gold);
-  border-width: 2px;
+  border-left-width: 4px;
+  border-top: 2px solid rgba(197, 165, 90, 0.5);
+  border-right: 1px solid var(--parchment);
+  border-bottom: 1px solid var(--parchment);
   padding: 2rem;
 }
 
@@ -167,6 +191,45 @@
   gap: 1rem;
 }
 
+/* ── Vintage Year Badge ──────────────────────────── */
+.vintage-year-badge {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0.75;
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -0.02em;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.wine-card-primary .vintage-year-badge {
+  font-size: 2rem;
+  opacity: 0.8;
+  top: 16px;
+  right: 18px;
+}
+
+/* ── Wine Card Meta (style + pairing) ────────────── */
+.wine-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+}
+
+.wine-pairing-icon {
+  font-size: 1rem;
+  line-height: 1;
+  filter: saturate(1.1);
+  cursor: default;
+}
+
+/* ── Responsive ──────────────────────────────────── */
 @media (max-width: 600px) {
   .wine-card-primary {
     padding: 1.25rem;
@@ -179,5 +242,11 @@
   }
   .alt-grid {
     grid-template-columns: 1fr;
+  }
+  .vintage-year-badge {
+    font-size: 1.2rem;
+  }
+  .wine-card-primary .vintage-year-badge {
+    font-size: 1.6rem;
   }
 }
