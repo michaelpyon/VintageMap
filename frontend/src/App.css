@@ -4,59 +4,111 @@
   flex-direction: column;
 }
 
-/* Hero Section */
+/* ── Hero Section ──────────────────────────────────── */
 .hero {
   background: linear-gradient(
-    135deg,
-    var(--wine-deep) 0%,
-    var(--wine-burgundy) 50%,
-    var(--wine-merlot) 100%
+    150deg,
+    #3a1018 0%,
+    var(--wine-deep) 30%,
+    var(--wine-burgundy) 65%,
+    #5a1a22 100%
   );
   color: var(--cream);
-  padding: 4rem 2rem 3rem;
+  padding: 4rem 2rem 0;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
+/* Subtle texture overlay */
 .hero::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    ellipse at 30% 50%,
-    rgba(197, 165, 90, 0.08) 0%,
-    transparent 70%
-  );
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 40%, rgba(197, 165, 90, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 60%, rgba(197, 165, 90, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Subtle dot pattern */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255,248,240,0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
   pointer-events: none;
 }
 
 .hero-content {
   position: relative;
+  z-index: 1;
   max-width: 640px;
   margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.hero-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-family: var(--font-body);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  opacity: 0.9;
 }
 
 .hero-title {
-  font-size: 3.5rem;
+  font-size: 3.8rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.75rem;
   color: var(--cream);
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
 }
 
 .hero-subtitle {
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 300;
-  opacity: 0.9;
-  margin-bottom: 2rem;
-  line-height: 1.6;
+  opacity: 0.88;
+  margin-bottom: 2.25rem;
+  line-height: 1.7;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Map Section */
+/* Gold divider at bottom of hero */
+.hero-divider {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin-top: 0;
+}
+
+.hero-divider::before,
+.hero-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+
+.hero-divider-ornament {
+  font-size: 1.4rem;
+  color: var(--gold);
+  opacity: 0.7;
+  padding: 0.5rem 1rem;
+  line-height: 1;
+}
+
+/* ── Map Section ──────────────────────────────────── */
 .map-section {
   width: 100%;
   height: 60vh;
@@ -64,7 +116,135 @@
   position: relative;
 }
 
-/* Recommendation Section */
+/* ── Map Placeholder (empty state) ───────────────── */
+.map-placeholder {
+  width: 100%;
+  background: var(--parchment);
+  border-top: 1px solid rgba(114,47,55,0.08);
+  border-bottom: 1px solid rgba(114,47,55,0.08);
+}
+
+.placeholder-top {
+  padding: 2.5rem 2rem 0;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.placeholder-label {
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-family: var(--font-body);
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+/* Featured wine region teaser cards */
+.featured-regions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 0;
+}
+
+.featured-region-card {
+  background: var(--white);
+  border: 1px solid rgba(197, 165, 90, 0.25);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  box-shadow: 0 1px 6px rgba(74,44,42,0.07);
+  opacity: 0.75;
+  filter: blur(0.3px);
+  position: relative;
+  overflow: hidden;
+  transition: opacity 0.2s, filter 0.2s;
+  cursor: default;
+  pointer-events: none;
+}
+
+.featured-region-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,248,240,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.fr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.15rem;
+}
+
+.fr-flag {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.fr-score {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--wine-deep);
+  background: rgba(114,47,55,0.09);
+  padding: 0.1rem 0.4rem;
+  border-radius: 4px;
+}
+
+.fr-name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--oak);
+  line-height: 1.2;
+}
+
+.fr-country {
+  font-size: 0.78rem;
+  color: var(--slate);
+}
+
+.fr-style {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 600;
+  color: var(--wine-deep);
+  background: rgba(114, 47, 55, 0.08);
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+  width: fit-content;
+  margin-top: 0.2rem;
+}
+
+/* Center CTA in placeholder */
+.map-placeholder-inner {
+  text-align: center;
+  padding: 2rem 2rem 2.5rem;
+}
+
+.map-placeholder-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.6rem;
+  opacity: 0.5;
+}
+
+.map-placeholder-text {
+  color: var(--slate);
+  font-size: 1rem;
+  max-width: 300px;
+  margin: 0 auto;
+  font-style: italic;
+}
+
+/* ── Recommendation Section ──────────────────────── */
 .recommendation-section {
   padding: 3rem 2rem;
   max-width: 900px;
@@ -84,7 +264,7 @@
   }
 }
 
-/* Error Banner */
+/* ── Error Banner ────────────────────────────────── */
 .error-banner {
   background: #fce4e4;
   border: 1px solid #e0b4b4;
@@ -94,19 +274,34 @@
   font-size: 0.95rem;
 }
 
-/* Footer */
+/* ── Footer ──────────────────────────────────────── */
 .footer {
   margin-top: auto;
-  padding: 2rem;
+  padding: 1.5rem 2rem 2rem;
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--slate);
   border-top: 1px solid var(--parchment);
+  background: var(--cream);
+}
+
+.footer-ornament {
+  color: var(--gold);
+  font-size: 1.1rem;
+  opacity: 0.5;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 768px) {
+  .featured-regions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 600px) {
   .hero {
-    padding: 2.5rem 1.5rem 2rem;
+    padding: 2.5rem 1.5rem 0;
   }
   .hero-title {
     font-size: 2.5rem;
@@ -117,31 +312,14 @@
   .recommendation-section {
     padding: 2rem 1rem;
   }
+  .featured-regions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
 }
 
-/* Map placeholder state */
-.map-placeholder {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
-  background: var(--parchment, #f5f0e8);
-  border-top: 1px solid rgba(0,0,0,0.06);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-.map-placeholder-inner {
-  text-align: center;
-  padding: 2rem;
-}
-.map-placeholder-icon {
-  font-size: 3rem;
-  display: block;
-  margin-bottom: 0.75rem;
-  opacity: 0.6;
-}
-.map-placeholder-text {
-  color: var(--slate, #666);
-  font-size: 1rem;
-  max-width: 280px;
-  margin: 0 auto;
+@media (max-width: 420px) {
+  .featured-regions-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }

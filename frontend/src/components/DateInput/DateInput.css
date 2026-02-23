@@ -62,8 +62,8 @@
 }
 
 .submit-btn {
-  padding: 0.85rem 2.5rem;
-  background: var(--gold);
+  padding: 0.9rem 2.5rem;
+  background: linear-gradient(135deg, #c5a55a 0%, #d4b96e 50%, #b8923e 100%);
   color: var(--oak);
   font-family: var(--font-heading);
   font-size: 1.1rem;
@@ -71,17 +71,21 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
   min-width: 240px;
+  box-shadow: 0 2px 12px rgba(197, 165, 90, 0.35), 0 1px 3px rgba(0,0,0,0.2);
+  letter-spacing: 0.02em;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #d4b56a;
-  transform: translateY(-1px);
+  background: linear-gradient(135deg, #d4b96e 0%, #e0c882 50%, #c5a55a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(197, 165, 90, 0.5), 0 2px 6px rgba(0,0,0,0.2);
 }
 
 .submit-btn:active:not(:disabled) {
   transform: translateY(0);
+  box-shadow: 0 1px 6px rgba(197, 165, 90, 0.3);
 }
 
 .submit-btn:disabled {
