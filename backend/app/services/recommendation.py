@@ -4,54 +4,60 @@ SIGNIFICANCE_PREFERENCES = {
     "birthday": {
         "style_preference": ["sparkling", "red", "white"],
         "prefer_regions": ["champagne", "bordeaux_red", "burgundy_red", "napa_valley"],
-        "template": "For a birthday celebration, {wine_style} from {region} is a wonderful choice \u2014 and {year} was {quality_adj} for this region. {detail}",
+        # {wine_style_label}, {region}, {year}, {quality_phrase}, {detail}
+        "primary_template": "For a birthday celebration, {wine_style_label} from {region} is a wonderful choice. {year} was {quality_phrase}. {detail}",
     },
     "anniversary": {
         "style_preference": ["red", "sparkling", "white"],
         "prefer_regions": ["burgundy_red", "bordeaux_red", "champagne", "tuscany", "piedmont"],
-        "template": "To mark this anniversary, {wine_style} from {region} captures depth and elegance \u2014 {year} was {quality_adj} here. {detail}",
+        "primary_template": "To mark this anniversary, {wine_style_label} from {region} captures depth and elegance. {year} was {quality_phrase} here. {detail}",
     },
     "wedding": {
         "style_preference": ["sparkling", "white", "red"],
         "prefer_regions": ["champagne", "burgundy_white", "napa_valley", "marlborough"],
-        "template": "A wedding calls for something joyous \u2014 {wine_style} from {region} in {year} brings {quality_adj} character to the toast. {detail}",
+        "primary_template": "A wedding calls for something joyous — {wine_style_label} from {region} is a natural choice. {year} was {quality_phrase}. {detail}",
     },
     "graduation": {
         "style_preference": ["sparkling", "white", "red"],
         "prefer_regions": ["champagne", "marlborough", "willamette", "mosel"],
-        "template": "Celebrate this achievement with {wine_style} from {region} \u2014 {year} was {quality_adj}, much like the promise ahead. {detail}",
+        "primary_template": "Celebrate this achievement with {wine_style_label} from {region}. {year} was {quality_phrase}, much like the promise ahead. {detail}",
     },
     "retirement": {
         "style_preference": ["red", "fortified", "white"],
         "prefer_regions": ["bordeaux_red", "burgundy_red", "douro", "piedmont", "rhone_north"],
-        "template": "A well-aged {wine_style} from {region}'s {quality_adj} {year} vintage \u2014 refined, complex, and worth the wait. {detail}",
+        "primary_template": "A well-aged {wine_style_label} from {region} — the {year} is {quality_phrase}, refined and worth every year of cellaring. {detail}",
     },
     "memorial": {
         "style_preference": ["red", "white", "fortified"],
         "prefer_regions": ["burgundy_red", "bordeaux_red", "rhone_north", "douro"],
-        "template": "In remembrance, {wine_style} from {region} \u2014 {year} produced {quality_adj} wines, a fitting tribute. {detail}",
+        "primary_template": "In remembrance, {wine_style_label} from {region}. {year} produced {quality_phrase} wines — a fitting tribute. {detail}",
     },
     "other": {
         "style_preference": ["red", "white", "sparkling"],
         "prefer_regions": ["bordeaux_red", "burgundy_red", "champagne", "napa_valley"],
-        "template": "For this special occasion, {wine_style} from {region} is an excellent choice \u2014 {year} was {quality_adj} for the region. {detail}",
+        "primary_template": "For this special occasion, {wine_style_label} from {region} is an excellent choice. {year} was {quality_phrase} for the region. {detail}",
     },
 }
 
-QUALITY_ADJECTIVES = {
-    "outstanding": "an exceptional year",
-    "excellent": "an excellent year",
+QUALITY_PHRASES = {
+    "outstanding": "exceptional",
+    "excellent": "excellent",
     "good": "a good year",
     "average": "a modest but respectable year",
-    "poor": "a challenging year, though skilled producers still shone",
-    "no_data": "a year we have limited data on",
+    "poor": "a challenging year — though skilled producers still shone",
+    "no_data": "a year with limited records",
 }
 
+# For alternatives — region-centric, no occasion framing
+# {region}, {year}, {quality_phrase}, {detail}, {wine_style_label}
+ALTERNATIVE_TEMPLATE = "{detail} {year} was {quality_phrase} for {region}."
+
 WINE_STYLE_LABELS = {
-    "red": "a bold red",
-    "white": "an elegant white",
-    "sparkling": "a sparkling wine",
-    "fortified": "a fortified wine",
+    "red": "red wine",
+    "white": "white wine",
+    "sparkling": "sparkling wine",
+    "fortified": "fortified wine",
+    "rosé": "rosé",
 }
 
 
@@ -98,8 +104,8 @@ def recommend(year, significance):
     return {
         "year": year,
         "significance": significance,
-        "primary": _format(primary, prefs, year),
-        "alternatives": [_format(a, prefs, year) for a in alternatives],
+        "primary": _format(primary, prefs, year, is_primary=True),
+        "alternatives": [_format(a, prefs, year, is_primary=False) for a in alternatives],
     }
 
 
@@ -119,17 +125,27 @@ def _compute_score(candidate, prefs):
     return score
 
 
-def _format(candidate, prefs, year):
-    quality_adj = QUALITY_ADJECTIVES.get(candidate["quality_tier"], "a notable year")
+def _format(candidate, prefs, year, is_primary=False):
+    quality_phrase = QUALITY_PHRASES.get(candidate["quality_tier"], "a notable year")
     wine_style_label = WINE_STYLE_LABELS.get(candidate["wine_style"], "wine")
+    detail = candidate["description"]
 
-    text = prefs["template"].format(
-        wine_style=wine_style_label,
-        region=candidate["region_name"],
-        year=year,
-        quality_adj=quality_adj,
-        detail=candidate["description"],
-    )
+    if is_primary:
+        text = prefs["primary_template"].format(
+            wine_style_label=wine_style_label,
+            region=candidate["region_name"],
+            year=year,
+            quality_phrase=quality_phrase,
+            detail=detail,
+        )
+    else:
+        # Alternatives: purely about the wine — no occasion framing, no repeated intro
+        text = ALTERNATIVE_TEMPLATE.format(
+            region=candidate["region_name"],
+            year=year,
+            quality_phrase=quality_phrase,
+            detail=detail,
+        )
 
     suggestion = ""
     if candidate["notable_wines"]:
