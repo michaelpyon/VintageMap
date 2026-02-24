@@ -23,8 +23,8 @@
 
 body {
   font-family: var(--font-body);
-  background-color: var(--cream);
-  color: var(--oak);
+  background-color: #120d10;
+  color: #e8d5c0;
   line-height: 1.6;
   min-height: 100vh;
 }
