@@ -138,6 +138,7 @@ function App() {
           {/* Featured regions preview */}
           <div className="placeholder-top">
             <p className="placeholder-label">✦ Featured Regions ✦</p>
+            <p className="placeholder-scale-note">Scores on a 100-point scale · 90+ Outstanding · 80–89 Excellent</p>
             <div className="featured-regions-grid">
               {FEATURED_REGIONS.map((r) => (
                 <div
@@ -146,13 +147,23 @@ function App() {
                 >
                   <div className="fr-header">
                     <span className="fr-flag">{r.flag}</span>
-                    <span className={`fr-score wine-score-${r.type}`}>{r.score}</span>
+                    <div className={`fr-score-wrap wine-score-${r.type}`}>
+                      <span className="fr-score-num">{r.score}</span>
+                      <span className="fr-score-denom">/100</span>
+                    </div>
                   </div>
                   <span className="fr-name">{r.name}</span>
                   <span className="fr-country">{r.country}</span>
                   <span className={`fr-style wine-badge-${r.type}`}>{r.style}</span>
                 </div>
               ))}
+            </div>
+            <div className="wine-type-legend">
+              <span className="wtl-label">Wine type:</span>
+              <span className="wtl-item wtl-red">● Red</span>
+              <span className="wtl-item wtl-white">● White</span>
+              <span className="wtl-item wtl-rosé">● Rosé</span>
+              <span className="wtl-item wtl-sparkling">● Sparkling</span>
             </div>
           </div>
 

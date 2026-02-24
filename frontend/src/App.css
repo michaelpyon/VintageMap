@@ -280,21 +280,33 @@
   line-height: 1;
 }
 
-/* Score badge: circular, wine-red fill */
-.fr-score {
-  font-family: var(--font-heading);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--cream);
-  background: var(--wine-deep);
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+/* Score badge: pill with score + /100 */
+.fr-score-wrap {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: var(--wine-deep);
+  color: var(--cream);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   flex-shrink: 0;
   line-height: 1;
+}
+
+.fr-score-num {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.fr-score-denom {
+  font-size: 0.55rem;
+  opacity: 0.75;
+  line-height: 1;
+  letter-spacing: -0.01em;
 }
 
 /* Score badge per wine type */
@@ -302,6 +314,41 @@
 .wine-score-white    { background: #a07840; color: var(--cream); }
 .wine-score-rosé     { background: #c26a50; }
 .wine-score-sparkling { background: #6a8ea8; }
+
+/* Score scale note */
+.placeholder-scale-note {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--slate);
+  opacity: 0.75;
+  margin: -0.5rem 0 1rem;
+  letter-spacing: 0.02em;
+}
+
+/* Wine type legend row */
+.wine-type-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+  padding-bottom: 0.25rem;
+  font-size: 0.72rem;
+  color: var(--slate);
+  flex-wrap: wrap;
+}
+
+.wtl-label {
+  font-weight: 600;
+  color: var(--oak);
+  opacity: 0.7;
+}
+
+.wtl-item { font-weight: 500; }
+.wtl-red      { color: #722F37; }
+.wtl-white    { color: #a07840; }
+.wtl-rosé     { color: #c26a50; }
+.wtl-sparkling { color: #4a7a96; }
 
 .fr-name {
   font-family: var(--font-heading);

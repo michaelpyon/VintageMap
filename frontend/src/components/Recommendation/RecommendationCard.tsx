@@ -25,6 +25,18 @@ function wineTypeClass(wineStyle: string): string {
   return "red";
 }
 
+/** Map drinking_window key → human label + icon */
+function drinkingWindowLabel(dw: string): { label: string; icon: string; cls: string } {
+  switch (dw) {
+    case "young": return { label: "Drink Now", icon: "🟢", cls: "dw-young" };
+    case "at_peak": return { label: "At Peak — Drink Now", icon: "⭐", cls: "dw-peak" };
+    case "mature": return { label: "Mature — Still Good", icon: "🍂", cls: "dw-mature" };
+    case "past_peak": return { label: "Past Peak", icon: "⚠️", cls: "dw-past" };
+    case "cellaring": return { label: "Needs Cellaring", icon: "🕐", cls: "dw-cellar" };
+    default: return { label: dw.replace(/_/g, " "), icon: "🍷", cls: "" };
+  }
+}
+
 function ScoreBadge({ score }: { score: number }) {
   return (
     <div className="score-badge">
@@ -67,6 +79,14 @@ function WineCard({
             <span className="wine-card-style">{rec.wine_style}</span>
             <span className="wine-pairing-icon" title="Food pairing">{pairingIcon}</span>
           </div>
+          {rec.drinking_window && (() => {
+            const dw = drinkingWindowLabel(rec.drinking_window);
+            return (
+              <span className={`drinking-window-badge ${dw.cls}`}>
+                {dw.icon} {dw.label}
+              </span>
+            );
+          })()}
         </div>
         <ScoreBadge score={rec.score} />
       </div>

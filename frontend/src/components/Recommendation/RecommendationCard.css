@@ -229,6 +229,26 @@
   cursor: default;
 }
 
+/* ── Drinking Window Badge ───────────────────────── */
+.drinking-window-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  margin-top: 0.4rem;
+  width: fit-content;
+  letter-spacing: 0.02em;
+}
+
+.dw-young    { background: rgba(74, 160, 74, 0.12); color: #2d7a2d; }
+.dw-peak     { background: rgba(197, 165, 90, 0.15); color: #7a6020; }
+.dw-mature   { background: rgba(160, 120, 60, 0.12); color: #6e4e1a; }
+.dw-past     { background: rgba(180, 60, 60, 0.1);  color: #9a3a3a; }
+.dw-cellar   { background: rgba(100, 120, 180, 0.12); color: #3a4a8a; }
+
 /* ── Responsive ──────────────────────────────────── */
 @media (max-width: 600px) {
   .wine-card-primary {

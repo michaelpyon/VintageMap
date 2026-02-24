@@ -37,7 +37,7 @@ export default function DateInput({ onSubmit, loading }: Props) {
     <form className="date-input" onSubmit={handleSubmit}>
       <div className="date-input-row">
         <div className="field">
-          <label htmlFor="year-input">Year</label>
+          <label htmlFor="year-input">Year <span className="field-hint">(1970 – 2023)</span></label>
           <input
             id="year-input"
             type="number"
@@ -51,7 +51,7 @@ export default function DateInput({ onSubmit, loading }: Props) {
         </div>
 
         <div className="field">
-          <label htmlFor="significance-select">Occasion</label>
+          <label htmlFor="significance-select">Occasion <span className="field-hint">(shapes your pick)</span></label>
           <select
             id="significance-select"
             value={significance}
