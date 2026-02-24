@@ -37,9 +37,9 @@ function drinkingWindowLabel(dw: string): { label: string; icon: string; cls: st
   }
 }
 
-function ScoreBadge({ score }: { score: number }) {
+function ScoreBadge({ score, typeClass }: { score: number; typeClass?: string }) {
   return (
-    <div className="score-badge">
+    <div className={`score-badge${typeClass ? ` score-badge-${typeClass}` : ""}`}>
       <span className="score-number">{score}</span>
       <span className="score-label">/ 100</span>
     </div>
@@ -88,7 +88,7 @@ function WineCard({
             );
           })()}
         </div>
-        <ScoreBadge score={rec.score} />
+        <ScoreBadge score={rec.score} typeClass={typeClass} />
       </div>
 
       <p className="wine-card-text">{rec.recommendation_text}</p>
@@ -111,6 +111,18 @@ function WineCard({
   );
 }
 
+/** Map quality_tier → human summary + class */
+function qualityTierSummary(tier: string): { label: string; cls: string } {
+  switch (tier) {
+    case "outstanding": return { label: "🌟 Outstanding Vintage", cls: "qt-outstanding" };
+    case "excellent":   return { label: "⭐ Excellent Vintage", cls: "qt-excellent" };
+    case "good":        return { label: "✓ Good Vintage", cls: "qt-good" };
+    case "average":     return { label: "○ Average Vintage", cls: "qt-average" };
+    case "poor":        return { label: "↓ Challenging Year", cls: "qt-poor" };
+    default:            return { label: "", cls: "" };
+  }
+}
+
 export default function RecommendationCard({ data, year }: Props) {
   if (data.message) {
     return (
@@ -122,9 +134,14 @@ export default function RecommendationCard({ data, year }: Props) {
 
   if (!data.primary) return null;
 
+  const tierInfo = qualityTierSummary(data.primary.quality_tier);
+
   return (
     <div className="rec-container">
       <h2 className="rec-title">Your {data.year} Vintage</h2>
+      {tierInfo.label && (
+        <p className={`rec-quality-tier ${tierInfo.cls}`}>{tierInfo.label}</p>
+      )}
 
       <WineCard rec={data.primary} isPrimary year={year ?? data.year} index={0} />
 

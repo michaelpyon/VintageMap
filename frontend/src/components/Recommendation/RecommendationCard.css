@@ -18,6 +18,21 @@
   padding: 2rem;
 }
 
+/* Quality tier subtitle */
+.rec-quality-tier {
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: -0.75rem 0 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+.qt-outstanding { color: #8b4513; }
+.qt-excellent   { color: #7a6020; }
+.qt-good        { color: #3a6a3a; }
+.qt-average     { color: var(--slate); }
+.qt-poor        { color: #8b3a3a; }
+
 /* Stagger fade-in animation for cards */
 @keyframes cardFadeIn {
   from {
@@ -124,6 +139,12 @@
   width: 76px;
   height: 76px;
 }
+
+/* Score badge per wine type */
+.score-badge-red       { background: #722F37; }
+.score-badge-white     { background: #a07840; }
+.score-badge-rosé      { background: #c26a50; }
+.score-badge-sparkling { background: #6a8ea8; }
 
 .score-number {
   font-family: var(--font-heading);

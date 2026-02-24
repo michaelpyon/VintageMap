@@ -89,6 +89,18 @@ function FitWorld({ trigger }: { trigger: number | null }) {
   return null;
 }
 
+/** Human label for drinking window values */
+function drinkingWindowText(dw: string): string {
+  const map: Record<string, string> = {
+    young:     "🟢 Drink Now — Still Young",
+    at_peak:   "⭐ At Peak — Best Time to Drink",
+    mature:    "🍂 Mature — Still Enjoyable",
+    past_peak: "⚠️ Past Peak",
+    cellaring: "🕐 Needs More Cellaring",
+  };
+  return map[dw] || dw.replace(/_/g, " ");
+}
+
 function RegionMarkers({
   geojson,
   year,
@@ -110,6 +122,7 @@ function RegionMarkers({
         const country = (props.country as string) || "";
         const wineStyle = (props.wine_style as string) || "";
         const grapes = (props.primary_grapes as string[]) || [];
+        const drinkingWindow = (props.drinking_window as string) || "";
 
         if (!feature.geometry || feature.geometry.type !== "Polygon") {
           return null;
@@ -140,11 +153,14 @@ function RegionMarkers({
                     {stars(score)} {tierLabel(tier)}
                   </div>
                 )}
+                {drinkingWindow && (
+                  <div className="wp-drinking-window">{drinkingWindowText(drinkingWindow)}</div>
+                )}
                 {grapes.length > 0 && (
                   <div className="wp-grapes">{grapes.join(", ")}</div>
                 )}
                 {year && (
-                  <div className="wp-vintage">Best vintage: {year}</div>
+                  <div className="wp-vintage">{year} vintage</div>
                 )}
               </div>
             </Popup>
@@ -161,6 +177,11 @@ export default function WineMap({ geojson, year }: Props) {
       {!year && (
         <div className="map-placeholder">
           <p>Enter a year above to explore vintage quality around the world.</p>
+        </div>
+      )}
+      {geojson && year && (
+        <div className="map-hint">
+          🍾 Click bottle markers to see vintage details
         </div>
       )}
       <MapContainer

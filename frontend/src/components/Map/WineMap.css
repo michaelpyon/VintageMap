@@ -5,6 +5,25 @@
   background: #e8e0d4;
 }
 
+/* Map interaction hint */
+.map-hint {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 248, 240, 0.93);
+  border: 1px solid rgba(197, 165, 90, 0.35);
+  border-radius: 20px;
+  padding: 0.35rem 1rem;
+  font-size: 0.78rem;
+  color: var(--oak);
+  z-index: 1000;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  letter-spacing: 0.01em;
+}
+
 .map-placeholder {
   position: absolute;
   top: 0;
@@ -228,6 +247,17 @@
   color: var(--slate);
   font-style: italic;
   margin-bottom: 4px;
+}
+
+.wp-drinking-window {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #5a4a20;
+  background: rgba(197, 165, 90, 0.1);
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  margin-bottom: 4px;
+  display: inline-block;
 }
 
 .wp-vintage {
