@@ -25,6 +25,15 @@ const FEATURED_REGIONS: {
   { name: "Rioja", flag: "🇪🇸", style: "Tempranillo", country: "Spain", score: 91, type: "red" },
 ];
 
+const SUGGESTED_VINTAGES = [
+  { year: 2016, label: "2016 Bordeaux", hint: "Legendary vintage" },
+  { year: 2010, label: "2010 Burgundy", hint: "Exceptional" },
+  { year: 2019, label: "2019 Napa", hint: "Outstanding" },
+  { year: 1990, label: "1990 Barolo", hint: "Historic" },
+  { year: 1982, label: "1982 Bordeaux", hint: "Iconic" },
+  { year: 2015, label: "2015 Rhône", hint: "Near perfect" },
+];
+
 const HOW_IT_WORKS = [
   { icon: "📅", step: "1", title: "Pick a Year", desc: "Enter any year from 1970–2023" },
   { icon: "🗺️", step: "2", title: "See the Map", desc: "Explore vintage quality by region" },
@@ -42,6 +51,8 @@ function App() {
   // Controls stagger key for re-animation on new data
   const [animKey, setAnimKey] = useState(0);
   const abortRef = useRef<AbortController | null>(null);
+
+  const [copied, setCopied] = useState(false);
 
   // Scroll to map when data loads
   useEffect(() => {
@@ -76,6 +87,7 @@ function App() {
       setGeojson(geo);
       setRecommendation(rec);
       setAnimKey((k) => k + 1); // trigger re-animation
+      history.replaceState({}, "", `?year=${year}`);
     } catch (e) {
       if (e instanceof Error && e.name === "AbortError") return;
       setError(e instanceof Error ? e.message : "Something went wrong.");
@@ -83,6 +95,17 @@ function App() {
       setLoading(false);
     }
   }, []);
+
+  // Auto-search from URL param on mount
+  useEffect(() => {
+    const yearParam = new URLSearchParams(window.location.search).get("year");
+    if (yearParam) {
+      const y = parseInt(yearParam, 10);
+      if (!isNaN(y) && y >= 1970 && y <= 2023) {
+        handleSubmit(y, "gift");
+      }
+    }
+  }, [handleSubmit]);
 
   return (
     <div className="app">
@@ -94,6 +117,18 @@ function App() {
             Every great wine tells the story of its year. Enter a date that
             matters to you — we'll find the perfect vintage.
           </p>
+          <div className="suggested-vintages">
+            {SUGGESTED_VINTAGES.map((v) => (
+              <button
+                key={v.year}
+                className="vintage-pill"
+                onClick={() => handleSubmit(v.year, "gift")}
+              >
+                <span className="vintage-pill-label">{v.label}</span>
+                <span className="vintage-pill-hint">{v.hint}</span>
+              </button>
+            ))}
+          </div>
           <DateInput onSubmit={handleSubmit} loading={loading} />
         </div>
         <div className="hero-divider">
@@ -193,6 +228,18 @@ function App() {
           className={`recommendation-section${fading ? " section-fading" : ""}`}
         >
           <RecommendationCard data={recommendation} year={activeYear} />
+          {recommendation && (
+            <button
+              onClick={() => {
+                navigator.clipboard?.writeText(window.location.href);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+              }}
+              className="share-btn"
+            >
+              {copied ? "Copied!" : "Share this vintage →"}
+            </button>
+          )}
         </section>
       ) : null}
 
