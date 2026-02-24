@@ -1,12 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState, useCallback } from "react";
 import L from "leaflet";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON as GeoJSONLayer, useMap, useMapEvents } from "react-leaflet";
 import Legend from "./Legend";
 import "./WineMap.css";
 
 interface Props {
   geojson: GeoJSON.FeatureCollection | null;
   year: number | null;
+}
+
+interface RegionPopupData {
+  name: string;
+  score: number;
+  tier: string;
+  wineStyle: string;
+  x: number;
+  y: number;
 }
 
 const TILE_URL =
@@ -171,7 +180,77 @@ function RegionMarkers({
   );
 }
 
+/** Invisible clickable polygon regions */
+function RegionPolygons({
+  geojson,
+  onRegionClick,
+}: {
+  geojson: GeoJSON.FeatureCollection;
+  onRegionClick: (data: RegionPopupData) => void;
+}) {
+  const map = useMap();
+
+  return (
+    <GeoJSONLayer
+      key={JSON.stringify(geojson).slice(0, 100)}
+      data={geojson}
+      style={() => ({
+        fillColor: "transparent",
+        fillOpacity: 0.08,
+        color: "transparent",
+        weight: 1,
+      })}
+      onEachFeature={(feature, layer) => {
+        layer.on("click", (e: L.LeafletMouseEvent) => {
+          const props = feature.properties || {};
+          const score = (props.score as number) || 0;
+          const point = map.latLngToContainerPoint(e.latlng);
+          onRegionClick({
+            name: (props.display_name as string) || (props.region_key as string) || "Unknown",
+            score,
+            tier: (props.quality_tier as string) || "no_data",
+            wineStyle: (props.wine_style as string) || "",
+            x: point.x,
+            y: point.y,
+          });
+        });
+        layer.on("mouseover", () => {
+          (layer as L.Path).setStyle({ fillColor: "#722F37", fillOpacity: 0.12, color: "#722F37", weight: 1 });
+        });
+        layer.on("mouseout", () => {
+          (layer as L.Path).setStyle({ fillColor: "transparent", fillOpacity: 0.08, color: "transparent", weight: 1 });
+        });
+      }}
+    />
+  );
+}
+
+/** Dismiss popup on map click elsewhere */
+function MapClickDismiss({ onDismiss }: { onDismiss: () => void }) {
+  useMapEvents({
+    click: () => onDismiss(),
+  });
+  return null;
+}
+
 export default function WineMap({ geojson, year }: Props) {
+  const [popup, setPopup] = useState<RegionPopupData | null>(null);
+
+  const handleRegionClick = useCallback((data: RegionPopupData) => {
+    setPopup(data);
+  }, []);
+
+  const dismissPopup = useCallback(() => setPopup(null), []);
+
+  // Dismiss on ESC
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setPopup(null);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
   return (
     <div className="wine-map-container">
       {!year && (
@@ -181,9 +260,31 @@ export default function WineMap({ geojson, year }: Props) {
       )}
       {geojson && year && (
         <div className="map-hint">
-          🍾 Click bottle markers to see vintage details
+          🍾 Click a region or bottle marker to see vintage details
         </div>
       )}
+
+      {/* Custom region popup */}
+      {popup && (
+        <div
+          className="region-info-popup"
+          style={{ left: popup.x, top: popup.y }}
+        >
+          <button className="rip-close" onClick={dismissPopup}>×</button>
+          <strong className="rip-name">{popup.name}</strong>
+          {popup.score > 0 && (
+            <span
+              className="rip-score"
+              style={{ backgroundColor: getColor(popup.score) }}
+            >
+              {popup.score}
+            </span>
+          )}
+          {popup.wineStyle && <span className="rip-style">{popup.wineStyle}</span>}
+          <span className="rip-tier">{stars(popup.score)} {tierLabel(popup.tier)}</span>
+        </div>
+      )}
+
       <MapContainer
         center={[20, 10]}
         zoom={2}
@@ -194,7 +295,13 @@ export default function WineMap({ geojson, year }: Props) {
       >
         <TileLayer url={TILE_URL} attribution={TILE_ATTR} />
         <FitWorld trigger={year} />
-        {geojson && year && <RegionMarkers geojson={geojson} year={year} />}
+        {geojson && year && (
+          <>
+            <RegionPolygons geojson={geojson} onRegionClick={handleRegionClick} />
+            <RegionMarkers geojson={geojson} year={year} />
+            <MapClickDismiss onDismiss={dismissPopup} />
+          </>
+        )}
         {year && <Legend />}
       </MapContainer>
     </div>

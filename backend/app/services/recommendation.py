@@ -1,5 +1,34 @@
 from app.services.vintage_service import _load_vintage_data
 
+# ── Rich Vintage Notes for key region+year combos ────────────────
+VINTAGE_NOTES = {
+    ("bordeaux_red", 1982): "A transformative year that put Bordeaux on the modern map. Deep, concentrated, opulent fruit with 40+ years of aging potential. Most bottles are now at glorious peak, showing truffle, tobacco, and dried roses over a backbone of sweet cassis.",
+    ("bordeaux_red", 1990): "Generous, sun-kissed, and immediately charming from release. The Right Bank excelled with plush Merlot. Now mature, showing leather, cedar, and fig compote. Drink soon for maximum pleasure.",
+    ("bordeaux_red", 2000): "The Millennium vintage. A perfect growing season produced wines of extraordinary structure and depth. Still drinking beautifully, especially Saint-Emilion and Pomerol, with decades of life ahead.",
+    ("bordeaux_red", 2005): "Powerful, tannic, and built for the long haul. A hot summer concentrated everything. The best Cabernet-dominant Left Bank wines are just entering their prime, with blackcurrant, graphite, and violets.",
+    ("bordeaux_red", 2009): "Hedonistic and generous. Warm conditions produced rich, low-acid wines that seduced early but are aging gracefully. Expect dark chocolate, ripe plum, and warm spice.",
+    ("bordeaux_red", 2010): "The intellectual counterpart to 2009. Cooler finish brought acid and structure. Extraordinary aging potential. Still youthful, with intense cassis, iron, and fresh herbs.",
+    ("bordeaux_red", 2015): "A return-to-form vintage after a tricky decade. Balanced, elegant, and approachable young. Silky tannins, red and black fruit in harmony, with floral lift.",
+    ("bordeaux_red", 2016): "Widely hailed as the vintage of the decade. A dry, warm summer followed by perfectly timed September rain. Classic structure with modern polish. Cabernet Sauvignon excelled.",
+    ("burgundy_red", 1990): "A hot, early harvest produced deeply colored Pinot Noir of unusual richness. The best are now at peak, showing wild strawberry, forest floor, and a haunting smoky finish.",
+    ("burgundy_red", 2005): "A great year across all appellations. Balanced acidity and ripe fruit. The Cote de Nuits produced wines of crystalline purity. Now entering their prime drinking window.",
+    ("burgundy_red", 2010): "Widely considered one of Burgundy's greatest modern vintages. Pinot Noir of rare elegance, with pure red fruit, mineral tension, and laser-focused acidity wrapped in silky tannins.",
+    ("burgundy_red", 2015): "A warm vintage that produced generous, fruit-forward Burgundy. More accessible than 2010 but with real depth. Drink now through 2035 for the top crus.",
+    ("napa_valley", 2013): "The year Napa delivered near-perfect conditions. A long, even growing season produced concentrated but balanced Cabernet Sauvignon. Drinking perfectly now, with blackberry, mocha, and sage.",
+    ("napa_valley", 2016): "Another benchmark Napa vintage. Moderate temperatures preserved freshness while building intensity. Look for cassis, graphite, and dried herb notes.",
+    ("napa_valley", 2019): "A cooler vintage by Napa standards that produced wines of remarkable finesse. Lower alcohol, bright acidity, and complex aromatics. One for the cellar.",
+    ("tuscany", 1997): "Tuscany's sun-drenched masterpiece. Brunello di Montalcino from this year remains one of Italy's greatest modern wines, with dried cherry, leather, and balsamic depth.",
+    ("tuscany", 2010): "A classic cool-vintage Sangiovese. Bright acidity, fine tannins, and aromatic complexity. Brunello and Chianti Classico Riserva are drinking superbly now.",
+    ("champagne", 2008): "A champagne vintage that changed the conversation. Razor-sharp acidity, extraordinary minerality, and tiny, persistent bubbles. The wine world still talks about it.",
+    ("champagne", 2002): "One of the great Champagne vintages. Rich and toasty, with brioche, hazelnut, and citrus zest. Prestige cuvees from this year are legendary.",
+    ("piedmont", 1990): "A legendary Barolo vintage. Hot, dry conditions produced powerful, concentrated Nebbiolo with exceptional aging potential. Now showing tar, roses, dried herbs, and sweet spice.",
+    ("piedmont", 2010): "One of the finest modern Barolo vintages. A cool growing season produced wines of remarkable elegance and transparency. Pure red cherry, rose petal, and mineral intensity.",
+    ("rhone_north", 2010): "A stunning year for Syrah. Cool conditions preserved acidity while delivering deep color and intense aromatics. Hermitage and Cote-Rotie produced wines for the ages.",
+    ("rhone_south", 2007): "A benchmark year for Chateauneuf-du-Pape. Warm but not excessive, producing rich Grenache-based blends with garrigue, dark fruit, and spice.",
+    ("rioja", 2001): "One of the great modern Rioja vintages. Traditional producers made wines of exceptional balance. Now showing dried cherry, vanilla, tobacco, and coconut from American oak aging.",
+    ("mosel", 2019): "An outstanding Riesling vintage. Perfect balance of ripeness and acidity. Both dry and sweet styles excelled, with peach, slate, and petrol-tinged minerality.",
+}
+
 SIGNIFICANCE_PREFERENCES = {
     "birthday": {
         "style_preference": ["sparkling", "red", "white"],
@@ -125,10 +154,46 @@ def _compute_score(candidate, prefs):
     return score
 
 
+def _build_detail(candidate, year):
+    """Build a rich, specific detail string. Prefer curated VINTAGE_NOTES, fall back to score-based text."""
+    region_key = candidate["region_key"]
+    note_key = (region_key, year)
+
+    if note_key in VINTAGE_NOTES:
+        return VINTAGE_NOTES[note_key]
+
+    # Score-based fallback with specificity
+    score = candidate["score"]
+    region = candidate["region_name"]
+    dw = candidate.get("drinking_window", "unknown")
+
+    # Drinking window context
+    dw_text = {
+        "young": "Still youthful with primary fruit character.",
+        "at_peak": "Now at its peak drinking window.",
+        "mature": "Fully mature, showing developed secondary aromas.",
+        "past_peak": "Past its prime, though well-stored bottles may still show character.",
+        "cellaring": "Still needs time in the cellar to reach its potential.",
+    }.get(dw, "")
+
+    if score >= 95:
+        return f"An exceptional year for {region}. The conditions aligned to produce wines of rare concentration and complexity. {dw_text}"
+    elif score >= 90:
+        return f"A standout vintage for {region}, with wines showing depth, balance, and aging potential. {dw_text}"
+    elif score >= 85:
+        return f"A very good year in {region}. Well-made wines with character and regional typicity. {dw_text}"
+    elif score >= 80:
+        return f"A solid vintage for {region}. The wines show clean fruit and honest expression, if not the intensity of the best years. {dw_text}"
+    elif score >= 75:
+        return f"A mixed vintage in {region}. Careful producers still made appealing wines, though selection matters. {dw_text}"
+    else:
+        return f"A challenging year in {region}. Difficult growing conditions tested even the best producers, though some managed to craft wines of surprising quality. {dw_text}"
+
+
 def _format(candidate, prefs, year, is_primary=False):
     quality_phrase = QUALITY_PHRASES.get(candidate["quality_tier"], "a notable year")
     wine_style_label = WINE_STYLE_LABELS.get(candidate["wine_style"], "wine")
-    detail = candidate["description"]
+    detail = _build_detail(candidate, year)
 
     if is_primary:
         text = prefs["primary_template"].format(
@@ -139,7 +204,6 @@ def _format(candidate, prefs, year, is_primary=False):
             detail=detail,
         )
     else:
-        # Alternatives: purely about the wine — no occasion framing, no repeated intro
         text = ALTERNATIVE_TEMPLATE.format(
             region=candidate["region_name"],
             year=year,

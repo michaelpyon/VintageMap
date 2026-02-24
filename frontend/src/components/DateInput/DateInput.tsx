@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect, useImperativeHandle, forwardRef } from "react";
 import type { Significance } from "../../types";
 import "./DateInput.css";
 
 interface Props {
   onSubmit: (year: number, significance: string) => void;
   loading: boolean;
+}
+
+export interface DateInputHandle {
+  setYearAndSubmit: (year: number) => void;
 }
 
 const SIGNIFICANCES: { value: Significance; label: string }[] = [
@@ -17,16 +21,49 @@ const SIGNIFICANCES: { value: Significance; label: string }[] = [
   { value: "other", label: "Just Curious" },
 ];
 
-export default function DateInput({ onSubmit, loading }: Props) {
+const LEGENDARY_YEARS = new Set([1945, 1961, 1982, 1990, 2000, 2005, 2009, 2010, 2015, 2016, 2019]);
+
+const DateInput = forwardRef<DateInputHandle, Props>(function DateInput({ onSubmit, loading }, ref) {
   const [year, setYear] = useState("");
   const [significance, setSignificance] = useState<Significance>("birthday");
   const [yearError, setYearError] = useState("");
+  const [yearHint, setYearHint] = useState("");
+
+  useImperativeHandle(ref, () => ({
+    setYearAndSubmit(y: number) {
+      setYear(String(y));
+      setYearError("");
+      onSubmit(y, significance);
+    },
+  }));
+
+  // Live validation + legendary hint
+  useEffect(() => {
+    if (!year) {
+      setYearError("");
+      setYearHint("");
+      return;
+    }
+    const y = parseInt(year, 10);
+    if (isNaN(y)) {
+      setYearError("");
+      setYearHint("");
+      return;
+    }
+    if (year.length >= 4 && (y < 1970 || y > 2023)) {
+      setYearError("Please enter a year between 1970 and 2023");
+      setYearHint("");
+    } else {
+      setYearError("");
+      setYearHint(LEGENDARY_YEARS.has(y) ? "⭐ Legendary vintage" : "");
+    }
+  }, [year]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const y = parseInt(year, 10);
     if (isNaN(y) || y < 1970 || y > 2023) {
-      setYearError("Please enter a year between 1970 and 2023.");
+      setYearError("Please enter a year between 1970 and 2023");
       return;
     }
     setYearError("");
@@ -48,6 +85,7 @@ export default function DateInput({ onSubmit, loading }: Props) {
             onChange={(e) => setYear(e.target.value)}
           />
           {yearError && <span className="field-error">{yearError}</span>}
+          {!yearError && yearHint && <span className="field-legendary-hint">{yearHint}</span>}
         </div>
 
         <div className="field">
@@ -71,4 +109,6 @@ export default function DateInput({ onSubmit, loading }: Props) {
       </button>
     </form>
   );
-}
+});
+
+export default DateInput;

@@ -626,3 +626,147 @@
 .share-btn:hover {
   opacity: 1;
 }
+
+/* ── Surprise Me Button ──────────────────────────── */
+.surprise-btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.4rem 1rem;
+  background: none;
+  border: 1px solid rgba(180, 140, 60, 0.3);
+  border-radius: 999px;
+  color: #c9a84c;
+  font-size: 0.78rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0.8;
+}
+.surprise-btn:hover:not(:disabled) {
+  background: rgba(180, 140, 60, 0.12);
+  border-color: rgba(180, 140, 60, 0.5);
+  opacity: 1;
+}
+.surprise-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Rec Actions Row ─────────────────────────────── */
+.rec-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ── Save Button ─────────────────────────────────── */
+.save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: 1px solid rgba(197, 165, 90, 0.4);
+  border-radius: 8px;
+  color: var(--gold, #c9a84c);
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.save-btn:hover {
+  background: rgba(197, 165, 90, 0.1);
+  border-color: rgba(197, 165, 90, 0.6);
+}
+.save-btn-active {
+  color: #b8923e;
+  background: rgba(197, 165, 90, 0.12);
+  border-color: #b8923e;
+}
+
+/* ── Saved Vintages Section ──────────────────────── */
+.saved-section {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.saved-title {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  color: var(--oak, #4A2C2A);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.saved-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.saved-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.75rem 1.25rem 0.75rem 0.85rem;
+  background: var(--white, #fff);
+  border: 1px solid rgba(197, 165, 90, 0.25);
+  border-left: 3px solid #722F37;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  min-width: 140px;
+}
+
+.saved-remove {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--slate, #6b6b6b);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+.saved-remove:hover { color: #8b3a3a; }
+
+.saved-year {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--wine-deep, #4A2C3A);
+}
+
+.saved-region {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--oak, #4A2C2A);
+}
+
+.saved-meta {
+  font-size: 0.72rem;
+  color: var(--slate, #6b6b6b);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.saved-clear {
+  display: block;
+  margin: 0.75rem auto 0;
+  background: none;
+  border: none;
+  color: var(--slate, #6b6b6b);
+  font-size: 0.75rem;
+  cursor: pointer;
+  text-decoration: underline;
+  opacity: 0.7;
+}
+.saved-clear:hover { opacity: 1; }

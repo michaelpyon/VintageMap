@@ -62,6 +62,18 @@
   color: #ffb4b4;
 }
 
+.field-legendary-hint {
+  font-size: 0.78rem;
+  color: #c9a84c;
+  font-weight: 500;
+  animation: hintFade 0.3s ease-out;
+}
+
+@keyframes hintFade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .field-hint {
   font-size: 0.72rem;
   opacity: 0.6;
