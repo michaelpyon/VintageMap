@@ -47,13 +47,14 @@ const FEATURED_REGIONS: {
   country: string;
   score: number;
   type: WineType;
+  bestYear: number;
 }[] = [
-  { name: "Bordeaux", flag: "🇫🇷", style: "Cabernet Blend", country: "France", score: 96, type: "red" },
-  { name: "Burgundy", flag: "🇫🇷", style: "Pinot Noir", country: "France", score: 98, type: "red" },
-  { name: "Napa Valley", flag: "🇺🇸", style: "Cabernet Sauvignon", country: "USA", score: 95, type: "red" },
-  { name: "Tuscany", flag: "🇮🇹", style: "Sangiovese", country: "Italy", score: 94, type: "red" },
-  { name: "Barossa Valley", flag: "🇦🇺", style: "Shiraz", country: "Australia", score: 93, type: "red" },
-  { name: "Rioja", flag: "🇪🇸", style: "Tempranillo", country: "Spain", score: 91, type: "red" },
+  { name: "Bordeaux", flag: "🇫🇷", style: "Cabernet Blend", country: "France", score: 96, type: "red", bestYear: 2016 },
+  { name: "Burgundy", flag: "🇫🇷", style: "Pinot Noir", country: "France", score: 98, type: "red", bestYear: 2010 },
+  { name: "Napa Valley", flag: "🇺🇸", style: "Cabernet Sauvignon", country: "USA", score: 95, type: "red", bestYear: 2019 },
+  { name: "Tuscany", flag: "🇮🇹", style: "Sangiovese", country: "Italy", score: 94, type: "red", bestYear: 2010 },
+  { name: "Barossa Valley", flag: "🇦🇺", style: "Shiraz", country: "Australia", score: 93, type: "red", bestYear: 2012 },
+  { name: "Rioja", flag: "🇪🇸", style: "Tempranillo", country: "Spain", score: 91, type: "red", bestYear: 2001 },
 ];
 
 const SUGGESTED_VINTAGES = [
@@ -253,6 +254,7 @@ function App() {
                 <div
                   key={r.name}
                   className={`featured-region-card wine-type-${r.type}`}
+                  onClick={() => handleSubmit(r.bestYear, "other")}
                 >
                   <div className="fr-header">
                     <span className="fr-flag">{r.flag}</span>

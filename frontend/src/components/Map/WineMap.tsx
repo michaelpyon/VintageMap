@@ -268,7 +268,7 @@ export default function WineMap({ geojson, year }: Props) {
       {popup && (
         <div
           className="region-info-popup"
-          style={{ left: popup.x, top: popup.y }}
+          style={window.innerWidth > 600 ? { left: Math.min(popup.x, window.innerWidth - 140), top: Math.max(popup.y, 60) } : undefined}
         >
           <button className="rip-close" onClick={dismissPopup}>×</button>
           <strong className="rip-name">{popup.name}</strong>

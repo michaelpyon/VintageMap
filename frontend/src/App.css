@@ -227,8 +227,15 @@
   opacity: 0.72;
   position: relative;
   overflow: hidden;
-  cursor: default;
-  pointer-events: none;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+}
+
+.featured-region-card:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  border-color: rgba(197, 165, 90, 0.3);
 }
 
 /* Shimmer animation for preview cards */
@@ -423,9 +430,9 @@
 
 /* ── Error Banner ────────────────────────────────── */
 .error-banner {
-  background: #fce4e4;
-  border: 1px solid #e0b4b4;
-  color: #8b3a3a;
+  background: rgba(139, 58, 58, 0.15);
+  border: 1px solid rgba(139, 58, 58, 0.3);
+  color: #ffb4b4;
   padding: 1rem 2rem;
   text-align: center;
   font-size: 0.95rem;
@@ -698,7 +705,7 @@
 .saved-title {
   font-family: var(--font-heading);
   font-size: 1.2rem;
-  color: var(--oak, #4A2C2A);
+  color: #e8d5c0;
   text-align: center;
   margin-bottom: 1rem;
 }
@@ -742,13 +749,13 @@
   font-family: var(--font-heading);
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--wine-deep, #4A2C3A);
+  color: #c9a84c;
 }
 
 .saved-region {
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--oak, #4A2C2A);
+  color: #e8d5c0;
 }
 
 .saved-meta {
