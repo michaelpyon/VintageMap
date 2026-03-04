@@ -3,7 +3,7 @@ import DateInput from "./components/DateInput/DateInput";
 import type { DateInputHandle } from "./components/DateInput/DateInput";
 import WineMap from "./components/Map/WineMap";
 import RecommendationCard from "./components/Recommendation/RecommendationCard";
-import { fetchRegionsGeoJSON, fetchRecommendation } from "./api/client";
+import { fetchRegionsGeoJSON, fetchRecommendation, fetchYearReport } from "./api/client";
 import type { RecommendationResponse } from "./types";
 import "./App.css";
 
@@ -75,6 +75,8 @@ const HOW_IT_WORKS = [
 function App() {
   const [geojson, setGeojson] = useState<GeoJSON.FeatureCollection | null>(null);
   const [recommendation, setRecommendation] = useState<RecommendationResponse | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [yearReport, setYearReport] = useState<any | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeYear, setActiveYear] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -142,16 +144,19 @@ function App() {
     setTimeout(() => {
       setGeojson(null);
       setRecommendation(null);
+      setYearReport(null);
       setFading(false);
     }, 150);
 
     try {
-      const [geo, rec] = await Promise.all([
+      const [geo, rec, report] = await Promise.all([
         fetchRegionsGeoJSON(year, controller.signal),
         fetchRecommendation(year, significance, controller.signal),
+        fetchYearReport(year, controller.signal),
       ]);
       setGeojson(geo);
       setRecommendation(rec);
+      setYearReport(report);
       setAnimKey((k) => k + 1); // trigger re-animation
       history.replaceState({}, "", `?year=${year}`);
     } catch (e) {
@@ -284,6 +289,63 @@ function App() {
               Enter a year above to explore wine regions from that vintage.
             </p>
           </div>
+        </section>
+      )}
+
+      {/* Harvest Report section */}
+      {yearReport && (
+        <section className={`harvest-report-section${fading ? " section-fading" : ""}`}>
+          <h2 className="harvest-report-title">✦ {yearReport.year} Harvest Report</h2>
+          <p className="harvest-report-summary">{yearReport.summary}</p>
+
+          <div className="harvest-columns">
+            {/* Winners */}
+            {yearReport.winners?.length > 0 && (
+              <div className="harvest-col harvest-winners">
+                <h3 className="harvest-col-title">🏆 Standout Regions</h3>
+                <ul className="harvest-list">
+                  {yearReport.winners.map((r: { region_key: string; display_name: string; country: string; score: number; description: string }) => (
+                    <li key={r.region_key} className="harvest-item harvest-item-win">
+                      <div className="hi-header">
+                        <span className="hi-name">{r.display_name}</span>
+                        <span className="hi-score hi-score-win">{r.score}/100</span>
+                      </div>
+                      <span className="hi-country">{r.country}</span>
+                      <p className="hi-desc">{r.description}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Strugglers */}
+            {yearReport.strugglers?.length > 0 && (
+              <div className="harvest-col harvest-strugglers">
+                <h3 className="harvest-col-title">⚠️ Difficult Conditions</h3>
+                <ul className="harvest-list">
+                  {yearReport.strugglers.map((r: { region_key: string; display_name: string; country: string; score: number; description: string }) => (
+                    <li key={r.region_key} className="harvest-item harvest-item-struggle">
+                      <div className="hi-header">
+                        <span className="hi-name">{r.display_name}</span>
+                        <span className="hi-score hi-score-struggle">{r.score}/100</span>
+                      </div>
+                      <span className="hi-country">{r.country}</span>
+                      <p className="hi-desc">{r.description}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          {yearReport.best_pick && (
+            <div className="harvest-best-pick">
+              <span className="hbp-label">Top Pick for {yearReport.year}</span>
+              <span className="hbp-region">{yearReport.best_pick.display_name}</span>
+              <span className="hbp-score">{yearReport.best_pick.score}/100</span>
+              <p className="hbp-desc">{yearReport.best_pick.description}</p>
+            </div>
+          )}
         </section>
       )}
 

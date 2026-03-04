@@ -53,6 +53,77 @@ def get_year_range():
     }
 
 
+def get_year_report(year: int) -> dict:
+    """Return a harvest report: winners, strugglers, best pick, and a summary narrative."""
+    data = _load_vintage_data()
+    year_str = str(year)
+
+    regions = []
+    for region_key, region in data["regions"].items():
+        vintage = region["vintages"].get(year_str)
+        if vintage:
+            regions.append({
+                "region_key": region_key,
+                "display_name": region["display_name"],
+                "country": region["country"],
+                "wine_style": region["wine_style"],
+                "primary_grapes": region["primary_grapes"],
+                **vintage,
+            })
+
+    if not regions:
+        return {"year": year, "winners": [], "strugglers": [], "best_pick": None, "summary": "No vintage data available for this year."}
+
+    # Sort by score
+    regions.sort(key=lambda r: r.get("score", 0), reverse=True)
+
+    # Winners: score >= 90 (Outstanding / Excellent)
+    winners = [r for r in regions if r.get("score", 0) >= 90][:5]
+
+    # Strugglers: score < 75
+    strugglers = sorted(
+        [r for r in regions if 0 < r.get("score", 0) < 75],
+        key=lambda r: r.get("score", 0)
+    )[:3]
+
+    # Best pick: highest scoring region
+    best_pick = regions[0] if regions else None
+
+    # Build a short narrative summary
+    avg_score = sum(r.get("score", 0) for r in regions if r.get("score", 0) > 0)
+    scored = [r for r in regions if r.get("score", 0) > 0]
+    avg = avg_score / len(scored) if scored else 0
+
+    if avg >= 90:
+        market_tone = f"{year} was an exceptional year across the board — rare conditions aligned in multiple regions simultaneously."
+    elif avg >= 85:
+        market_tone = f"{year} was a strong vintage overall, with standout performances concentrated in Europe's classic regions."
+    elif avg >= 78:
+        market_tone = f"{year} was a mixed vintage. Some regions thrived; others faced difficult growing conditions."
+    else:
+        market_tone = f"{year} was a challenging vintage. Quality was inconsistent and few regions produced exceptional wines."
+
+    top_names = ", ".join(r["display_name"] for r in winners[:3]) if winners else "none"
+    struggler_names = ", ".join(r["display_name"] for r in strugglers[:2]) if strugglers else "none"
+
+    summary = (
+        f"{market_tone} "
+        f"Best results came from {top_names}. "
+        + (f"Regions that struggled included {struggler_names}. " if strugglers else "")
+        + (f"Top recommendation: {best_pick['display_name']} ({best_pick['score']}/100)." if best_pick else "")
+    )
+
+    return {
+        "year": year,
+        "summary": summary,
+        "average_score": round(avg, 1),
+        "winners": winners,
+        "strugglers": strugglers,
+        "best_pick": best_pick,
+        "total_regions": len(scored),
+    }
+
+
 def get_vintage_by_year(year):
     data = _load_vintage_data()
     year_str = str(year)

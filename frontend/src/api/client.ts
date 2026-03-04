@@ -38,3 +38,9 @@ export async function fetchYearRange(signal?: AbortSignal) {
   if (!res.ok) throw new Error(`Failed to fetch year range: ${res.statusText}`);
   return res.json();
 }
+
+export async function fetchYearReport(year: number, signal?: AbortSignal) {
+  const res = await fetch(`${BASE}/vintage/${year}/report`, { signal });
+  if (!res.ok) throw new Error(`Failed to fetch vintage report: ${res.statusText}`);
+  return res.json();
+}
