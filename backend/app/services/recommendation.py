@@ -66,6 +66,11 @@ SIGNIFICANCE_PREFERENCES = {
         "prefer_regions": ["bordeaux_red", "burgundy_red", "champagne", "napa_valley"],
         "primary_template": "For this special occasion, {wine_style_label} from {region} is an excellent choice. {year} was {quality_phrase} for the region. {detail}",
     },
+    "gift": {
+        "style_preference": ["red", "sparkling", "white"],
+        "prefer_regions": ["bordeaux_red", "burgundy_red", "champagne", "barossa", "napa_valley"],
+        "primary_template": "As a gift, {wine_style_label} from {region} is a memorable choice. {year} was {quality_phrase} — a bottle that tells a story. {detail}",
+    },
 }
 
 QUALITY_PHRASES = {

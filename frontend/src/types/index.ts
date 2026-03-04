@@ -66,6 +66,8 @@ export interface HarvestReport {
   average_score: number;
   total_regions: number;
   winners: HarvestReportRegion[];
+  total_winners: number;
   strugglers: HarvestReportRegion[];
+  total_strugglers: number;
   best_pick: HarvestReportRegion | null;
 }

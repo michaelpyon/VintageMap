@@ -316,9 +316,16 @@ function App() {
 
           <div className="harvest-columns">
             {/* Winners */}
-            {yearReport.winners?.length > 0 && (
-              <div className="harvest-col harvest-winners">
-                <h3 className="harvest-col-title">🏆 Standout Regions</h3>
+            <div className="harvest-col harvest-winners">
+              <h3 className="harvest-col-title">
+                🏆 Standout Regions
+                {yearReport.total_winners > 0 && (
+                  <span className="harvest-count">{yearReport.total_winners}</span>
+                )}
+              </h3>
+              {yearReport.winners.length === 0 ? (
+                <p className="harvest-empty">No region scored 90+ this vintage — a difficult year across the board.</p>
+              ) : (
                 <ul className="harvest-list">
                   {yearReport.winners.map((r: HarvestReportRegion) => (
                     <li key={r.region_key} className="harvest-item harvest-item-win">
@@ -331,13 +338,20 @@ function App() {
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
+              )}
+            </div>
 
             {/* Strugglers */}
-            {yearReport.strugglers?.length > 0 && (
-              <div className="harvest-col harvest-strugglers">
-                <h3 className="harvest-col-title">⚠️ Difficult Conditions</h3>
+            <div className="harvest-col harvest-strugglers">
+              <h3 className="harvest-col-title">
+                ⚠️ Difficult Conditions
+                {yearReport.total_strugglers > 0 && (
+                  <span className="harvest-count harvest-count-struggle">{yearReport.total_strugglers}</span>
+                )}
+              </h3>
+              {yearReport.strugglers.length === 0 ? (
+                <p className="harvest-empty harvest-empty-positive">Every region performed solidly — no major struggles this vintage.</p>
+              ) : (
                 <ul className="harvest-list">
                   {yearReport.strugglers.map((r: HarvestReportRegion) => (
                     <li key={r.region_key} className="harvest-item harvest-item-struggle">
@@ -350,8 +364,8 @@ function App() {
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {yearReport.best_pick && (

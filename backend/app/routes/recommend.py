@@ -7,7 +7,7 @@ recommend_bp = Blueprint("recommend", __name__)
 
 VALID_SIGNIFICANCES = [
     "birthday", "anniversary", "wedding",
-    "graduation", "retirement", "memorial", "other",
+    "graduation", "retirement", "memorial", "other", "gift",
 ]
 
 

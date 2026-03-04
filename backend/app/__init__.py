@@ -24,6 +24,9 @@ def create_app():
     @app.route("/", defaults={"path": ""})
     @app.route("/<path:path>")
     def serve_frontend(path):
+        # Don't catch unmatched /api/* routes — return JSON 404 instead of the SPA.
+        if path.startswith("api/"):
+            return jsonify({"error": f"Not found: /{path}"}), 404
         if path and os.path.exists(os.path.join(static_dir, path)):
             return send_from_directory(static_dir, path)
         return send_from_directory(static_dir, "index.html")

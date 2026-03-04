@@ -77,14 +77,14 @@ def get_year_report(year: int) -> dict:
     # Sort by score
     regions.sort(key=lambda r: r.get("score", 0), reverse=True)
 
-    # Winners: score >= 90 (Outstanding / Excellent)
-    winners = [r for r in regions if r.get("score", 0) >= 90][:5]
+    # Winners: score >= 90 — return ALL qualifying regions, sorted best first
+    all_winners = [r for r in regions if r.get("score", 0) >= 90]
 
-    # Strugglers: score < 75
-    strugglers = sorted(
+    # Strugglers: score < 75 — return ALL qualifying regions, sorted worst first
+    all_strugglers = sorted(
         [r for r in regions if 0 < r.get("score", 0) < 75],
         key=lambda r: r.get("score", 0)
-    )[:3]
+    )
 
     # Best pick: highest scoring region
     best_pick = regions[0] if regions else None
@@ -103,13 +103,15 @@ def get_year_report(year: int) -> dict:
     else:
         market_tone = f"{year} was a challenging vintage. Quality was inconsistent and few regions produced exceptional wines."
 
-    top_names = ", ".join(r["display_name"] for r in winners[:3]) if winners else "none"
-    struggler_names = ", ".join(r["display_name"] for r in strugglers[:2]) if strugglers else "none"
+    top_names = ", ".join(r["display_name"] for r in all_winners[:3]) if all_winners else "none standouts"
+    struggler_names = ", ".join(r["display_name"] for r in all_strugglers[:2]) if all_strugglers else "none"
 
     summary = (
         f"{market_tone} "
-        f"Best results came from {top_names}. "
-        + (f"Regions that struggled included {struggler_names}. " if strugglers else "")
+        + (f"Best results came from {top_names}" + (f" and {len(all_winners) - 3} more regions" if len(all_winners) > 3 else "") + ". "
+           if all_winners else "")
+        + (f"Regions that struggled included {struggler_names}" + (f" and {len(all_strugglers) - 2} others" if len(all_strugglers) > 2 else "") + ". "
+           if all_strugglers else "")
         + (f"Top recommendation: {best_pick['display_name']} ({best_pick['score']}/100)." if best_pick else "")
     )
 
@@ -117,8 +119,10 @@ def get_year_report(year: int) -> dict:
         "year": year,
         "summary": summary,
         "average_score": round(avg, 1),
-        "winners": winners,
-        "strugglers": strugglers,
+        "winners": all_winners,
+        "total_winners": len(all_winners),
+        "strugglers": all_strugglers,
+        "total_strugglers": len(all_strugglers),
         "best_pick": best_pick,
         "total_regions": len(scored),
     }
