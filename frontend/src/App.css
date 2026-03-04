@@ -922,3 +922,32 @@
   line-height: 1.55;
   margin-top: 0.25rem;
 }
+
+/* Harvest Report skeleton states */
+.skeleton-harvest {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+.skeleton-harvest-title {
+  height: 1.2rem;
+  width: 200px;
+  background: rgba(201, 168, 76, 0.12);
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+.skeleton-harvest-summary {
+  height: 3.5rem;
+  background: rgba(255,255,255,0.04);
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  border-left: 3px solid rgba(201, 168, 76, 0.15);
+}
+.skeleton-harvest-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+.skeleton-harvest-col {
+  height: 180px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+}

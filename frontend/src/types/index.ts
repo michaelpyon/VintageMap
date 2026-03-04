@@ -47,3 +47,25 @@ export interface YearRange {
   min_year: number;
   max_year: number;
 }
+
+export interface HarvestReportRegion {
+  region_key: string;
+  display_name: string;
+  country: string;
+  score: number;
+  quality_tier: string;
+  description: string;
+  wine_style: string;
+  primary_grapes: string[];
+  drinking_window?: string;
+}
+
+export interface HarvestReport {
+  year: number;
+  summary: string;
+  average_score: number;
+  total_regions: number;
+  winners: HarvestReportRegion[];
+  strugglers: HarvestReportRegion[];
+  best_pick: HarvestReportRegion | null;
+}

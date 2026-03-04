@@ -4,7 +4,7 @@ import type { DateInputHandle } from "./components/DateInput/DateInput";
 import WineMap from "./components/Map/WineMap";
 import RecommendationCard from "./components/Recommendation/RecommendationCard";
 import { fetchRegionsGeoJSON, fetchRecommendation, fetchYearReport } from "./api/client";
-import type { RecommendationResponse } from "./types";
+import type { RecommendationResponse, HarvestReport, HarvestReportRegion } from "./types";
 import "./App.css";
 
 // ── localStorage Favorites ──────────────────────────
@@ -75,8 +75,7 @@ const HOW_IT_WORKS = [
 function App() {
   const [geojson, setGeojson] = useState<GeoJSON.FeatureCollection | null>(null);
   const [recommendation, setRecommendation] = useState<RecommendationResponse | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [yearReport, setYearReport] = useState<any | null>(null);
+  const [yearReport, setYearReport] = useState<HarvestReport | null>(null);
   const [loading, setLoading] = useState(false);
   const [activeYear, setActiveYear] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -149,16 +148,23 @@ function App() {
     }, 150);
 
     try {
-      const [geo, rec, report] = await Promise.all([
+      // Map + recommendation are critical — if either fails, show error.
+      // Year report is additive — fetch independently so it never breaks the core flow.
+      const [geo, rec] = await Promise.all([
         fetchRegionsGeoJSON(year, controller.signal),
         fetchRecommendation(year, significance, controller.signal),
-        fetchYearReport(year, controller.signal),
       ]);
       setGeojson(geo);
       setRecommendation(rec);
-      setYearReport(report);
       setAnimKey((k) => k + 1); // trigger re-animation
       history.replaceState({}, "", `?year=${year}`);
+
+      // Fetch harvest report non-critically — silently omit on failure
+      fetchYearReport(year, controller.signal)
+        .then((report) => setYearReport(report))
+        .catch(() => {
+          /* harvest report is additive; don't surface this error */
+        });
     } catch (e) {
       if (e instanceof Error && e.name === "AbortError") return;
       setError(e instanceof Error ? e.message : "Something went wrong.");
@@ -292,9 +298,19 @@ function App() {
         </section>
       )}
 
-      {/* Harvest Report section */}
+      {/* Harvest Report section — shows skeleton while map is loading (report arrives ~same time) */}
+      {loading && !yearReport && geojson === null && activeYear && (
+        <section className="harvest-report-section skeleton-harvest">
+          <div className="skeleton-harvest-title" />
+          <div className="skeleton-harvest-summary" />
+          <div className="skeleton-harvest-cols">
+            <div className="skeleton-harvest-col" />
+            <div className="skeleton-harvest-col" />
+          </div>
+        </section>
+      )}
       {yearReport && (
-        <section className={`harvest-report-section${fading ? " section-fading" : ""}`}>
+        <section key={animKey} className={`harvest-report-section${fading ? " section-fading" : ""}`}>
           <h2 className="harvest-report-title">✦ {yearReport.year} Harvest Report</h2>
           <p className="harvest-report-summary">{yearReport.summary}</p>
 
@@ -304,7 +320,7 @@ function App() {
               <div className="harvest-col harvest-winners">
                 <h3 className="harvest-col-title">🏆 Standout Regions</h3>
                 <ul className="harvest-list">
-                  {yearReport.winners.map((r: { region_key: string; display_name: string; country: string; score: number; description: string }) => (
+                  {yearReport.winners.map((r: HarvestReportRegion) => (
                     <li key={r.region_key} className="harvest-item harvest-item-win">
                       <div className="hi-header">
                         <span className="hi-name">{r.display_name}</span>
@@ -323,7 +339,7 @@ function App() {
               <div className="harvest-col harvest-strugglers">
                 <h3 className="harvest-col-title">⚠️ Difficult Conditions</h3>
                 <ul className="harvest-list">
-                  {yearReport.strugglers.map((r: { region_key: string; display_name: string; country: string; score: number; description: string }) => (
+                  {yearReport.strugglers.map((r: HarvestReportRegion) => (
                     <li key={r.region_key} className="harvest-item harvest-item-struggle">
                       <div className="hi-header">
                         <span className="hi-name">{r.display_name}</span>
