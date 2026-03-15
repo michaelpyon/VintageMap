@@ -44,13 +44,13 @@ npm run dev             # Vite dev server, proxies API to localhost:5050
 
 - Date selection triggers parallel fetches: regions GeoJSON + wine recommendation
 - UI scrolls to map section automatically after data loads
-- **IMPORTANT:** `frontend/src/api/client.ts` hardcodes `http://localhost:5050/api` — needs an env var for production deployment
+- `frontend/src/api/client.ts` uses `VITE_API_URL` env var (defaults to `/api` for production)
+- Vite dev server proxies `/api` to Flask backend on port 5050 via `vite.config.ts`
 - Service layer in `backend/app/services/` keeps business logic out of routes
-- No deployment config exists yet (no Dockerfile, no railway.json) — needs to be built if deploying
+- Dockerfile and railway.json configured for Railway deployment
 
-## Deployment status
+## Deployment
 
-**Not deployed.** No Dockerfile or Railway config exists. To deploy:
-1. Add env var support to `frontend/src/api/client.ts` for `VITE_API_URL`
-2. Write a Dockerfile (similar pattern to subway-shame: Node build stage + Python runtime stage)
-3. Set up Railway or Render project
+- **Dockerfile:** 2-stage build (Node frontend → Python runtime with gunicorn)
+- **railway.json:** Configured for Railway with auto-restart on failure
+- Frontend builds to `static/` dir, served by Flask's catch-all route

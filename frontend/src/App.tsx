@@ -51,10 +51,10 @@ const FEATURED_REGIONS: {
 }[] = [
   { name: "Bordeaux", flag: "🇫🇷", style: "Cabernet Blend", country: "France", score: 96, type: "red", bestYear: 2016 },
   { name: "Burgundy", flag: "🇫🇷", style: "Pinot Noir", country: "France", score: 98, type: "red", bestYear: 2010 },
+  { name: "Champagne", flag: "🇫🇷", style: "Sparkling Blend", country: "France", score: 97, type: "sparkling", bestYear: 2008 },
   { name: "Napa Valley", flag: "🇺🇸", style: "Cabernet Sauvignon", country: "USA", score: 95, type: "red", bestYear: 2019 },
+  { name: "Mosel", flag: "🇩🇪", style: "Riesling", country: "Germany", score: 94, type: "white", bestYear: 2019 },
   { name: "Tuscany", flag: "🇮🇹", style: "Sangiovese", country: "Italy", score: 94, type: "red", bestYear: 2010 },
-  { name: "Barossa Valley", flag: "🇦🇺", style: "Shiraz", country: "Australia", score: 93, type: "red", bestYear: 2012 },
-  { name: "Rioja", flag: "🇪🇸", style: "Tempranillo", country: "Spain", score: 91, type: "red", bestYear: 2001 },
 ];
 
 const SUGGESTED_VINTAGES = [
@@ -157,7 +157,7 @@ function App() {
       setGeojson(geo);
       setRecommendation(rec);
       setAnimKey((k) => k + 1); // trigger re-animation
-      history.replaceState({}, "", `?year=${year}`);
+      history.replaceState({}, "", `?year=${year}&occasion=${significance}`);
 
       // Fetch harvest report non-critically — silently omit on failure
       fetchYearReport(year, controller.signal)
@@ -175,11 +175,13 @@ function App() {
 
   // Auto-search from URL param on mount
   useEffect(() => {
-    const yearParam = new URLSearchParams(window.location.search).get("year");
+    const params = new URLSearchParams(window.location.search);
+    const yearParam = params.get("year");
+    const occasionParam = params.get("occasion") || "other";
     if (yearParam) {
       const y = parseInt(yearParam, 10);
       if (!isNaN(y) && y >= 1970 && y <= 2023) {
-        handleSubmit(y, "gift");
+        handleSubmit(y, occasionParam);
       }
     }
   }, [handleSubmit]);
@@ -199,7 +201,7 @@ function App() {
               <button
                 key={v.year}
                 className="vintage-pill"
-                onClick={() => handleSubmit(v.year, "gift")}
+                onClick={() => handleSubmit(v.year, "other")}
               >
                 <span className="vintage-pill-label">{v.label}</span>
                 <span className="vintage-pill-hint">{v.hint}</span>
@@ -427,8 +429,15 @@ function App() {
           <h3 className="saved-title">Saved Vintages</h3>
           <div className="saved-grid">
             {saved.map((s) => (
-              <div key={`${s.year}-${s.region_name}`} className="saved-card">
-                <button className="saved-remove" onClick={() => removeSaved(s.year, s.region_name)}>×</button>
+              <div
+                key={`${s.year}-${s.region_name}`}
+                className="saved-card"
+                onClick={() => handleSubmit(s.year, "other")}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(s.year, "other"); }}
+              >
+                <button className="saved-remove" onClick={(e) => { e.stopPropagation(); removeSaved(s.year, s.region_name); }}>×</button>
                 <span className="saved-year">{s.year}</span>
                 <span className="saved-region">{s.region_name}</span>
                 <span className="saved-meta">{s.score}pts · {s.wine_style}</span>

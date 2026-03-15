@@ -18,6 +18,7 @@ const SIGNIFICANCES: { value: Significance; label: string }[] = [
   { value: "graduation", label: "Graduation" },
   { value: "retirement", label: "Retirement" },
   { value: "memorial", label: "Memorial" },
+  { value: "gift", label: "Gift" },
   { value: "other", label: "Just Curious" },
 ];
 

@@ -5,6 +5,7 @@ export type Significance =
   | "graduation"
   | "retirement"
   | "memorial"
+  | "gift"
   | "other";
 
 export interface VintageRegion {
