@@ -82,6 +82,7 @@ function App() {
   const [fading, setFading] = useState(false);
   const [animKey, setAnimKey] = useState(0);
   const abortRef = useRef<AbortController | null>(null);
+  const fadeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dateInputRef = useRef<DateInputHandle>(null);
 
   const [copied, setCopied] = useState(false);
@@ -139,12 +140,19 @@ function App() {
     setError(null);
     setActiveYear(year);
 
+    // Cancel any pending fade timeout from a previous call
+    if (fadeTimeoutRef.current) {
+      clearTimeout(fadeTimeoutRef.current);
+      fadeTimeoutRef.current = null;
+    }
+
     // After 150ms fade-out, clear old data
-    setTimeout(() => {
+    fadeTimeoutRef.current = setTimeout(() => {
       setGeojson(null);
       setRecommendation(null);
       setYearReport(null);
       setFading(false);
+      fadeTimeoutRef.current = null;
     }, 150);
 
     try {
@@ -154,6 +162,14 @@ function App() {
         fetchRegionsGeoJSON(year, controller.signal),
         fetchRecommendation(year, significance, controller.signal),
       ]);
+
+      // Cancel the fade timeout — data arrived before it fired
+      if (fadeTimeoutRef.current) {
+        clearTimeout(fadeTimeoutRef.current);
+        fadeTimeoutRef.current = null;
+        setFading(false);
+      }
+
       setGeojson(geo);
       setRecommendation(rec);
       setAnimKey((k) => k + 1); // trigger re-animation
