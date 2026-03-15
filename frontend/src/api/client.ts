@@ -1,11 +1,4 @@
-const isLocalhost =
-  typeof window !== "undefined" &&
-  (window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1");
-
-const BASE =
-  import.meta.env.VITE_API_URL ||
-  (isLocalhost ? "/api" : "https://vintagemap-production.up.railway.app/api");
+const BASE = import.meta.env.VITE_API_URL || "/api";
 
 export async function fetchRegionsGeoJSON(year: number, signal?: AbortSignal) {
   const res = await fetch(`${BASE}/regions/${year}`, { signal });
