@@ -249,19 +249,154 @@ function App() {
         </div>
       )}
 
-      {/* Map section — only rendered when data is loaded or loading */}
-      {geojson ? (
-        <section
-          id="map-section"
-          className={`map-section${fading ? " section-fading" : ""}`}
-        >
-          <WineMap geojson={geojson} year={activeYear} />
-        </section>
-      ) : loading ? (
-        /* Skeleton map placeholder during load */
-        <section id="map-section" className="map-section skeleton-map">
-          <div className="skeleton-map-inner" />
-        </section>
+      {/* Results — side by side map + info when active, placeholder when idle */}
+      {(geojson || loading) ? (
+        <div className="results-layout">
+          {/* Left: Map */}
+          <div className="results-left">
+            {geojson ? (
+              <section
+                id="map-section"
+                className={`map-section${fading ? " section-fading" : ""}`}
+              >
+                <WineMap geojson={geojson} year={activeYear} />
+              </section>
+            ) : (
+              <section id="map-section" className="map-section skeleton-map">
+                <div className="skeleton-map-inner" />
+              </section>
+            )}
+          </div>
+
+          {/* Right: Harvest Report + Recommendation */}
+          <div className="results-right">
+            {/* Harvest Report */}
+            {loading && !yearReport && activeYear && (
+              <section className="harvest-report-section skeleton-harvest">
+                <div className="skeleton-harvest-title" />
+                <div className="skeleton-harvest-summary" />
+                <div className="skeleton-harvest-cols">
+                  <div className="skeleton-harvest-col" />
+                  <div className="skeleton-harvest-col" />
+                </div>
+              </section>
+            )}
+            {yearReport && (
+              <section key={animKey} className={`harvest-report-section${fading ? " section-fading" : ""}`}>
+                <h2 className="harvest-report-title">✦ {yearReport.year} Harvest Report</h2>
+                <p className="harvest-report-summary">{yearReport.summary}</p>
+
+                <div className="harvest-columns">
+                  {/* Winners */}
+                  <div className="harvest-col harvest-winners">
+                    <h3 className="harvest-col-title">
+                      🏆 Standout Regions
+                      {yearReport.total_winners > 0 && (
+                        <span className="harvest-count">{yearReport.total_winners}</span>
+                      )}
+                    </h3>
+                    {yearReport.winners.length === 0 ? (
+                      <p className="harvest-empty">No region scored 90+ this vintage — a difficult year across the board.</p>
+                    ) : (
+                      <ul className="harvest-list">
+                        {yearReport.winners.map((r: HarvestReportRegion) => (
+                          <li key={r.region_key} className="harvest-item harvest-item-win">
+                            <div className="hi-header">
+                              <span className="hi-name">{r.display_name}</span>
+                              <span className="hi-score hi-score-win">{r.score}/100</span>
+                            </div>
+                            <span className="hi-country">{r.country}</span>
+                            <p className="hi-desc">{r.description}</p>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+
+                  {/* Strugglers */}
+                  <div className="harvest-col harvest-strugglers">
+                    <h3 className="harvest-col-title">
+                      ⚠️ Difficult Conditions
+                      {yearReport.total_strugglers > 0 && (
+                        <span className="harvest-count harvest-count-struggle">{yearReport.total_strugglers}</span>
+                      )}
+                    </h3>
+                    {yearReport.strugglers.length === 0 ? (
+                      <p className="harvest-empty harvest-empty-positive">Every region performed solidly — no major struggles this vintage.</p>
+                    ) : (
+                      <ul className="harvest-list">
+                        {yearReport.strugglers.map((r: HarvestReportRegion) => (
+                          <li key={r.region_key} className="harvest-item harvest-item-struggle">
+                            <div className="hi-header">
+                              <span className="hi-name">{r.display_name}</span>
+                              <span className="hi-score hi-score-struggle">{r.score}/100</span>
+                            </div>
+                            <span className="hi-country">{r.country}</span>
+                            <p className="hi-desc">{r.description}</p>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+
+                {yearReport.best_pick && (
+                  <div className="harvest-best-pick">
+                    <span className="hbp-label">Top Pick for {yearReport.year}</span>
+                    <span className="hbp-region">{yearReport.best_pick.display_name}</span>
+                    <span className="hbp-score">{yearReport.best_pick.score}/100</span>
+                    <p className="hbp-desc">{yearReport.best_pick.description}</p>
+                  </div>
+                )}
+              </section>
+            )}
+
+            {/* Recommendation */}
+            {loading && !recommendation ? (
+              <section className="recommendation-section skeleton-rec-section">
+                <div className="skeleton-rec-title" />
+                <div className="skeleton-card skeleton-card-primary" />
+                <div className="skeleton-alt-row">
+                  <div className="skeleton-card" />
+                  <div className="skeleton-card" />
+                  <div className="skeleton-card" />
+                </div>
+              </section>
+            ) : recommendation ? (
+              <section
+                key={animKey}
+                className={`recommendation-section${fading ? " section-fading" : ""}`}
+              >
+                <RecommendationCard data={recommendation} year={activeYear} />
+                {recommendation?.primary && (
+                  <div className="rec-actions">
+                    <button
+                      onClick={toggleSave}
+                      className={`save-btn${activeYear && isSaved(saved, activeYear, recommendation.primary.region_name) ? " save-btn-active" : ""}`}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill={activeYear && isSaved(saved, activeYear, recommendation.primary.region_name) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                      {activeYear && isSaved(saved, activeYear, recommendation.primary.region_name)
+                        ? "Saved ✓"
+                        : `Save ${activeYear} · ${recommendation.primary.region_name}`}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard?.writeText(window.location.href);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }}
+                      className="share-btn"
+                      aria-live="polite"
+                    >
+                      {copied ? "Copied!" : "Share this vintage →"}
+                    </button>
+                  </div>
+                )}
+              </section>
+            ) : null}
+          </div>{/* /results-right */}
+        </div>{/* /results-layout */}
       ) : (
         <section id="map-section" className="explore-placeholder">
           {/* How It Works */}
@@ -321,132 +456,6 @@ function App() {
           </div>
         </section>
       )}
-
-      {/* Harvest Report section — shows skeleton while map is loading (report arrives ~same time) */}
-      {loading && !yearReport && geojson === null && activeYear && (
-        <section className="harvest-report-section skeleton-harvest">
-          <div className="skeleton-harvest-title" />
-          <div className="skeleton-harvest-summary" />
-          <div className="skeleton-harvest-cols">
-            <div className="skeleton-harvest-col" />
-            <div className="skeleton-harvest-col" />
-          </div>
-        </section>
-      )}
-      {yearReport && (
-        <section key={animKey} className={`harvest-report-section${fading ? " section-fading" : ""}`}>
-          <h2 className="harvest-report-title">✦ {yearReport.year} Harvest Report</h2>
-          <p className="harvest-report-summary">{yearReport.summary}</p>
-
-          <div className="harvest-columns">
-            {/* Winners */}
-            <div className="harvest-col harvest-winners">
-              <h3 className="harvest-col-title">
-                🏆 Standout Regions
-                {yearReport.total_winners > 0 && (
-                  <span className="harvest-count">{yearReport.total_winners}</span>
-                )}
-              </h3>
-              {yearReport.winners.length === 0 ? (
-                <p className="harvest-empty">No region scored 90+ this vintage — a difficult year across the board.</p>
-              ) : (
-                <ul className="harvest-list">
-                  {yearReport.winners.map((r: HarvestReportRegion) => (
-                    <li key={r.region_key} className="harvest-item harvest-item-win">
-                      <div className="hi-header">
-                        <span className="hi-name">{r.display_name}</span>
-                        <span className="hi-score hi-score-win">{r.score}/100</span>
-                      </div>
-                      <span className="hi-country">{r.country}</span>
-                      <p className="hi-desc">{r.description}</p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-
-            {/* Strugglers */}
-            <div className="harvest-col harvest-strugglers">
-              <h3 className="harvest-col-title">
-                ⚠️ Difficult Conditions
-                {yearReport.total_strugglers > 0 && (
-                  <span className="harvest-count harvest-count-struggle">{yearReport.total_strugglers}</span>
-                )}
-              </h3>
-              {yearReport.strugglers.length === 0 ? (
-                <p className="harvest-empty harvest-empty-positive">Every region performed solidly — no major struggles this vintage.</p>
-              ) : (
-                <ul className="harvest-list">
-                  {yearReport.strugglers.map((r: HarvestReportRegion) => (
-                    <li key={r.region_key} className="harvest-item harvest-item-struggle">
-                      <div className="hi-header">
-                        <span className="hi-name">{r.display_name}</span>
-                        <span className="hi-score hi-score-struggle">{r.score}/100</span>
-                      </div>
-                      <span className="hi-country">{r.country}</span>
-                      <p className="hi-desc">{r.description}</p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </div>
-
-          {yearReport.best_pick && (
-            <div className="harvest-best-pick">
-              <span className="hbp-label">Top Pick for {yearReport.year}</span>
-              <span className="hbp-region">{yearReport.best_pick.display_name}</span>
-              <span className="hbp-score">{yearReport.best_pick.score}/100</span>
-              <p className="hbp-desc">{yearReport.best_pick.description}</p>
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* Recommendation section: skeleton while loading, real data when ready */}
-      {loading && !recommendation ? (
-        <section className="recommendation-section skeleton-rec-section">
-          <div className="skeleton-rec-title" />
-          <div className="skeleton-card skeleton-card-primary" />
-          <div className="skeleton-alt-row">
-            <div className="skeleton-card" />
-            <div className="skeleton-card" />
-            <div className="skeleton-card" />
-          </div>
-        </section>
-      ) : recommendation ? (
-        <section
-          key={animKey}
-          className={`recommendation-section${fading ? " section-fading" : ""}`}
-        >
-          <RecommendationCard data={recommendation} year={activeYear} />
-          {recommendation?.primary && (
-            <div className="rec-actions">
-              <button
-                onClick={toggleSave}
-                className={`save-btn${activeYear && isSaved(saved, activeYear, recommendation.primary.region_name) ? " save-btn-active" : ""}`}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill={activeYear && isSaved(saved, activeYear, recommendation.primary.region_name) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-                {activeYear && isSaved(saved, activeYear, recommendation.primary.region_name)
-                  ? "Saved ✓"
-                  : `Save ${activeYear} · ${recommendation.primary.region_name}`}
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  navigator.clipboard?.writeText(window.location.href);
-                  setCopied(true);
-                  setTimeout(() => setCopied(false), 2000);
-                }}
-                className="share-btn"
-                aria-live="polite"
-              >
-                {copied ? "Copied!" : "Share this vintage →"}
-              </button>
-            </div>
-          )}
-        </section>
-      ) : null}
 
       {saved.length > 0 && (
         <section className="saved-section">
