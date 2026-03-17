@@ -206,13 +206,13 @@ function App() {
     <div className="app">
       <header className="hero">
         <div className="hero-content">
-          <div className="hero-badge">✦ Wine Vintage Explorer ✦</div>
-          <h1 className="hero-title">VintageMap</h1>
-          <p className="hero-subtitle">
+          <div className="hero-badge stagger-in" style={{"--stagger": "0ms"} as React.CSSProperties}>✦ Wine Vintage Explorer ✦</div>
+          <h1 className="hero-title stagger-in" style={{"--stagger": "80ms"} as React.CSSProperties}>VintageMap</h1>
+          <p className="hero-subtitle stagger-in" style={{"--stagger": "160ms"} as React.CSSProperties}>
             Every great wine tells the story of its year. Enter a date that
             matters to you — we'll find the perfect vintage.
           </p>
-          <div className="suggested-vintages">
+          <div className="suggested-vintages stagger-in" style={{"--stagger": "240ms"} as React.CSSProperties}>
             {SUGGESTED_VINTAGES.map((v) => (
               <button
                 key={v.year}
@@ -224,10 +224,13 @@ function App() {
               </button>
             ))}
           </div>
-          <DateInput ref={dateInputRef} onSubmit={handleSubmit} loading={loading} />
+          <div className="stagger-in" style={{"--stagger": "320ms"} as React.CSSProperties}>
+            <DateInput ref={dateInputRef} onSubmit={handleSubmit} loading={loading} />
+          </div>
           <button
             type="button"
-            className="surprise-btn"
+            className="surprise-btn stagger-in"
+            style={{"--stagger": "400ms"} as React.CSSProperties}
             onClick={handleSurprise}
             disabled={loading}
             title="Try a random great vintage year"
@@ -263,8 +266,8 @@ function App() {
         <section id="map-section" className="explore-placeholder">
           {/* How It Works */}
           <div className="how-it-works">
-            {HOW_IT_WORKS.map((step) => (
-              <div key={step.step} className="hiw-step">
+            {HOW_IT_WORKS.map((step, i) => (
+              <div key={step.step} className="hiw-step stagger-in" style={{"--stagger": `${100 + i * 80}ms`} as React.CSSProperties}>
                 <div className="hiw-icon">{step.icon}</div>
                 <div className="hiw-body">
                   <span className="hiw-title">{step.title}</span>
@@ -279,11 +282,14 @@ function App() {
             <p className="placeholder-label">✦ Featured Regions ✦</p>
             <p className="placeholder-scale-note">Scores on a 100-point scale · 90+ Outstanding · 80–89 Excellent</p>
             <div className="featured-regions-grid">
-              {FEATURED_REGIONS.map((r) => (
-                <div
+              {FEATURED_REGIONS.map((r, i) => (
+                <button
                   key={r.name}
-                  className={`featured-region-card wine-type-${r.type}`}
+                  type="button"
+                  className={`featured-region-card wine-type-${r.type} stagger-in`}
+                  style={{"--stagger": `${200 + i * 80}ms`} as React.CSSProperties}
                   onClick={() => handleSubmit(r.bestYear, "other")}
+                  aria-label={`Explore ${r.name} ${r.bestYear} vintage`}
                 >
                   <div className="fr-header">
                     <span className="fr-flag">{r.flag}</span>
@@ -295,7 +301,7 @@ function App() {
                   <span className="fr-name">{r.name}</span>
                   <span className="fr-country">{r.country}</span>
                   <span className={`fr-style wine-badge-${r.type}`}>{r.style}</span>
-                </div>
+                </button>
               ))}
             </div>
             <div className="wine-type-legend">
@@ -426,12 +432,14 @@ function App() {
                   : `Save ${activeYear} · ${recommendation.primary.region_name}`}
               </button>
               <button
+                type="button"
                 onClick={() => {
                   navigator.clipboard?.writeText(window.location.href);
                   setCopied(true);
                   setTimeout(() => setCopied(false), 2000);
                 }}
                 className="share-btn"
+                aria-live="polite"
               >
                 {copied ? "Copied!" : "Share this vintage →"}
               </button>
@@ -453,7 +461,7 @@ function App() {
                 tabIndex={0}
                 onKeyDown={(e) => { if (e.key === "Enter") handleSubmit(s.year, "other"); }}
               >
-                <button className="saved-remove" onClick={(e) => { e.stopPropagation(); removeSaved(s.year, s.region_name); }}>×</button>
+                <button type="button" className="saved-remove" aria-label="Remove saved vintage" onClick={(e) => { e.stopPropagation(); removeSaved(s.year, s.region_name); }}>×</button>
                 <span className="saved-year">{s.year}</span>
                 <span className="saved-region">{s.region_name}</span>
                 <span className="saved-meta">{s.score}pts · {s.wine_style}</span>
@@ -467,7 +475,7 @@ function App() {
       <footer className="footer">
         <div className="footer-ornament">❧</div>
         <p>
-          VintageMap &mdash; Wine vintage data sourced from public reviews and
+          VintageMap, wine vintage data sourced from public reviews and
           expert consensus. Boundaries are approximate.
         </p>
       </footer>

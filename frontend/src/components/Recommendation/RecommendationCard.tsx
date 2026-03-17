@@ -59,7 +59,7 @@ function WineCard({
 }) {
   const typeClass = wineTypeClass(rec.wine_style);
   const pairingIcon = foodPairingIcon(rec.wine_style);
-  const staggerDelay = `${index * 50}ms`;
+  const staggerDelay = `${index * 80}ms`;
 
   return (
     <div
@@ -106,6 +106,17 @@ function WineCard({
           <span className="notable-label">Notable producers:</span>{" "}
           {rec.notable_wines.join(" \u00B7 ")}
         </div>
+      )}
+
+      {year && (
+        <a
+          href={`https://www.vivino.com/search/wines?q=${encodeURIComponent(rec.region_name + " " + year)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="vivino-link"
+        >
+          Check prices on Vivino →
+        </a>
       )}
     </div>
   );
