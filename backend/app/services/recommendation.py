@@ -145,16 +145,16 @@ def recommend(year, significance):
 
 def _compute_score(candidate, prefs):
     score = 0.0
-    score += candidate["score"] * 0.75  # Vintage quality is the primary factor
+    score += candidate["score"] * 0.88  # Vintage quality dominates
 
     style = candidate["wine_style"]
     if style in prefs["style_preference"]:
         rank = prefs["style_preference"].index(style)
-        score += (10 - rank * 3)  # Reduced: style is a tiebreaker, not a deciding factor
+        score += (6 - rank * 2)  # Style: minor tiebreaker (6, 4, 2)
 
     if candidate["region_key"] in prefs["prefer_regions"]:
         rank = prefs["prefer_regions"].index(candidate["region_key"])
-        score += max(8 - rank * 2, 2)  # Reduced: region preference is a tiebreaker
+        score += max(5 - rank, 1)  # Region: minimal nudge (5, 4, 3, 2, 1)
 
     return score
 
