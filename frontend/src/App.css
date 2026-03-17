@@ -1067,3 +1067,65 @@ button.featured-region-card {
 .harvest-empty-positive {
   color: #7a9a6e;
 }
+
+/* ── Side-by-side Results Layout ──────────────────── */
+.results-layout {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 2rem 0;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+.results-left {
+  flex: 0 0 50%;
+  min-width: 0;
+}
+
+.results-left .map-section {
+  width: 100%;
+  height: 500px;
+  min-height: 360px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+
+.results-left .skeleton-map {
+  height: 500px;
+  border-radius: 12px;
+}
+
+.results-right {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+.results-right .harvest-report-section,
+.results-right .recommendation-section {
+  margin: 0 0 1.5rem;
+  padding: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .results-layout {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .results-left {
+    flex: none;
+    width: 100%;
+  }
+  .results-left .map-section,
+  .results-left .skeleton-map {
+    height: 300px;
+  }
+  .results-right {
+    max-height: none;
+  }
+}
