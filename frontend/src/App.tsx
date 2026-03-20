@@ -156,12 +156,17 @@ function App() {
     }, 150);
 
     try {
-      // Map + recommendation are critical — if either fails, show error.
-      // Year report is additive — fetch independently so it never breaks the core flow.
-      const [geo, rec] = await Promise.all([
+      // Fetch all three in parallel. Map + recommendation are critical;
+      // year report is additive (a failure won't block the core flow).
+      const [geoResult, recResult, reportResult] = await Promise.allSettled([
         fetchRegionsGeoJSON(year, controller.signal),
         fetchRecommendation(year, significance, controller.signal),
+        fetchYearReport(year, controller.signal),
       ]);
+
+      // If critical calls failed, throw so the catch block handles it
+      if (geoResult.status === "rejected") throw geoResult.reason;
+      if (recResult.status === "rejected") throw recResult.reason;
 
       // Cancel the fade timeout — data arrived before it fired
       if (fadeTimeoutRef.current) {
@@ -170,17 +175,12 @@ function App() {
         setFading(false);
       }
 
-      setGeojson(geo);
-      setRecommendation(rec);
-      setAnimKey((k) => k + 1); // trigger re-animation
+      // Set all state in one synchronous batch so React renders everything together
+      setGeojson(geoResult.value);
+      setRecommendation(recResult.value);
+      setYearReport(reportResult.status === "fulfilled" ? reportResult.value : null);
+      setAnimKey((k) => k + 1);
       history.replaceState({}, "", `?year=${year}&occasion=${significance}`);
-
-      // Fetch harvest report non-critically — silently omit on failure
-      fetchYearReport(year, controller.signal)
-        .then((report) => setYearReport(report))
-        .catch(() => {
-          /* harvest report is additive; don't surface this error */
-        });
     } catch (e) {
       if (e instanceof Error && e.name === "AbortError") return;
       setError(e instanceof Error ? e.message : "Something went wrong.");
