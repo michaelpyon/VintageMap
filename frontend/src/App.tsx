@@ -79,10 +79,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [activeYear, setActiveYear] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [fading, setFading] = useState(false);
-  const [animKey, setAnimKey] = useState(0);
   const abortRef = useRef<AbortController | null>(null);
-  const fadeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dateInputRef = useRef<DateInputHandle>(null);
 
   const [copied, setCopied] = useState(false);
@@ -134,52 +131,26 @@ function App() {
     const controller = new AbortController();
     abortRef.current = controller;
 
-    // Start fade-out of existing content
-    setFading(true);
+    // Immediately clear ALL old data so stale results never persist
+    setGeojson(null);
+    setRecommendation(null);
+    setYearReport(null);
     setLoading(true);
     setError(null);
     setActiveYear(year);
-
-    // Cancel any pending fade timeout from a previous call
-    if (fadeTimeoutRef.current) {
-      clearTimeout(fadeTimeoutRef.current);
-      fadeTimeoutRef.current = null;
-    }
-
-    // After 150ms fade-out, clear old data
-    fadeTimeoutRef.current = setTimeout(() => {
-      setGeojson(null);
-      setRecommendation(null);
-      setYearReport(null);
-      setFading(false);
-      fadeTimeoutRef.current = null;
-    }, 150);
-
     try {
-      // Fetch all three in parallel. Map + recommendation are critical;
-      // year report is additive (a failure won't block the core flow).
       const [geoResult, recResult, reportResult] = await Promise.allSettled([
         fetchRegionsGeoJSON(year, controller.signal),
         fetchRecommendation(year, significance, controller.signal),
         fetchYearReport(year, controller.signal),
       ]);
 
-      // If critical calls failed, throw so the catch block handles it
       if (geoResult.status === "rejected") throw geoResult.reason;
       if (recResult.status === "rejected") throw recResult.reason;
 
-      // Cancel the fade timeout — data arrived before it fired
-      if (fadeTimeoutRef.current) {
-        clearTimeout(fadeTimeoutRef.current);
-        fadeTimeoutRef.current = null;
-        setFading(false);
-      }
-
-      // Set all state in one synchronous batch so React renders everything together
       setGeojson(geoResult.value);
       setRecommendation(recResult.value);
       setYearReport(reportResult.status === "fulfilled" ? reportResult.value : null);
-      setAnimKey((k) => k + 1);
       history.replaceState({}, "", `?year=${year}&occasion=${significance}`);
     } catch (e) {
       if (e instanceof Error && e.name === "AbortError") return;
@@ -257,7 +228,7 @@ function App() {
             {geojson ? (
               <section
                 id="map-section"
-                className={`map-section${fading ? " section-fading" : ""}`}
+                className={`map-section`}
               >
                 <WineMap geojson={geojson} year={activeYear} />
               </section>
@@ -282,7 +253,7 @@ function App() {
               </section>
             )}
             {yearReport && (
-              <section key={animKey} className={`harvest-report-section${fading ? " section-fading" : ""}`}>
+              <section className={`harvest-report-section`}>
                 <h2 className="harvest-report-title">{yearReport.year} Harvest Report</h2>
                 <p className="harvest-report-summary">{yearReport.summary}</p>
 
@@ -364,8 +335,8 @@ function App() {
               </section>
             ) : recommendation ? (
               <section
-                key={animKey}
-                className={`recommendation-section${fading ? " section-fading" : ""}`}
+                key={activeYear}
+                className={`recommendation-section`}
               >
                 <RecommendationCard data={recommendation} year={activeYear} />
                 {recommendation?.primary && (
