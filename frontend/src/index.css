@@ -7,23 +7,32 @@
 }
 
 :root {
-  --wine-deep: #722f37;
-  --wine-burgundy: #800020;
-  --wine-merlot: #7f171f;
-  --cream: #fff8f0;
-  --parchment: #f5e6d3;
-  --oak: #4a2c2a;
-  --gold: #c5a55a;
-  --slate: #5c5c5c;
-  --white: #ffffff;
+  /* Palette */
+  --page-bg: #fbf9f4;
+  --surface-low: #f5f3ee;
+  --surface-container: #f0eee9;
+  --surface-high: #eae8e3;
+  --primary: #2a0002;
+  --primary-container: #4a0e0e;
+  --secondary: #af2b3e;
+  --gold: #e9c176;
+  --gold-dim: #c5a55a;
+  --outline: #877270;
+  --outline-variant: #dac1bf;
+  --on-surface: #1b1c19;
+  --on-surface-variant: #544341;
+  --stone-400: #a8a29e;
+  --stone-500: #78716c;
 
-  /* Tiered text colors for dark backgrounds */
-  --text-primary: #e8d5c0;
-  --text-secondary: #c0a888;
-  --text-tertiary: #a09078;
+  /* Wine type colors */
+  --wine-red: #722F37;
+  --wine-white: #C8A96E;
+  --wine-rose: #E8936A;
+  --wine-sparkling: #9DB8C9;
 
-  --font-heading: "Playfair Display", Georgia, serif;
-  --font-body: "Source Sans 3", "Segoe UI", sans-serif;
+  /* Typography */
+  --font-heading: "Newsreader", Georgia, serif;
+  --font-body: "Work Sans", "Segoe UI", sans-serif;
 }
 
 html {
@@ -32,10 +41,11 @@ html {
 
 body {
   font-family: var(--font-body);
-  background-color: #120d10;
-  color: #e8d5c0;
-  line-height: 1.6;
+  background-color: var(--page-bg);
+  color: var(--on-surface);
+  line-height: 1.8;
   min-height: 100vh;
+  font-weight: 300;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1, "lnum" 1;
   -webkit-font-smoothing: antialiased;
@@ -47,6 +57,7 @@ h2,
 h3 {
   font-family: var(--font-heading);
   font-weight: 600;
+  color: var(--primary);
 }
 
 #root {
@@ -55,8 +66,8 @@ h3 {
 
 /* Selection */
 ::selection {
-  background: rgba(197, 165, 90, 0.3);
-  color: var(--cream);
+  background: rgba(233, 193, 118, 0.3);
+  color: var(--primary);
 }
 
 /* Custom scrollbar */
@@ -70,12 +81,12 @@ h3 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(197, 165, 90, 0.2);
+  background: var(--outline-variant);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(197, 165, 90, 0.35);
+  background: var(--outline);
 }
 
 /* Staggered entrance animation */
@@ -95,7 +106,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 [role="button"]:focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--gold-dim);
   outline-offset: 2px;
 }
 

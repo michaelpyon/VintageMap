@@ -5,78 +5,69 @@
 
 .rec-title {
   font-family: var(--font-heading);
+  font-style: italic;
   font-size: 2rem;
-  color: var(--cream);
+  font-weight: 400;
+  color: var(--primary);
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .rec-message {
   text-align: center;
-  font-size: 1.1rem;
-  color: var(--text-secondary);
+  font-size: 1rem;
+  color: var(--stone-500);
   padding: 2rem;
+  font-family: var(--font-heading);
+  font-style: italic;
 }
 
 /* Quality tier subtitle */
 .rec-quality-tier {
   text-align: center;
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin: -0.75rem 0 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 0 0 1.5rem;
   letter-spacing: 0.02em;
 }
 
-.qt-outstanding { color: #d4a060; }
-.qt-excellent   { color: #b8a050; }
-.qt-good        { color: #6aaa6a; }
-.qt-average     { color: var(--text-secondary); }
-.qt-poor        { color: #d06060; }
+.qt-outstanding { color: var(--gold-dim); }
+.qt-excellent   { color: var(--gold-dim); }
+.qt-good        { color: #5a7a5a; }
+.qt-average     { color: var(--stone-500); }
+.qt-poor        { color: var(--secondary); }
 
 /* Stagger fade-in animation for cards */
 @keyframes cardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
+  from { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 /* Wine Card */
 .wine-card {
-  background: var(--white);
-  border: 1px solid var(--parchment);
-  border-left: 3px solid var(--wine-deep);
-  border-radius: 12px;
+  background: var(--page-bg);
+  border: 1px solid var(--outline-variant);
+  border-left: 3px solid var(--wine-red);
   padding: 1.5rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: border-color 0.3s;
   animation: cardFadeIn 0.4s ease-out both;
   position: relative;
   overflow: hidden;
 }
 
 /* Wine type left-border color coding */
-.wine-card-type-red     { border-left-color: #722F37; }
-.wine-card-type-white   { border-left-color: #C8A96E; }
-.wine-card-type-rosé    { border-left-color: #E8936A; }
-.wine-card-type-sparkling { border-left-color: #9DB8C9; }
+.wine-card-type-red     { border-left-color: var(--wine-red); }
+.wine-card-type-white   { border-left-color: var(--wine-white); }
+.wine-card-type-rosé    { border-left-color: var(--wine-rose); }
+.wine-card-type-sparkling { border-left-color: var(--wine-sparkling); }
 
 .wine-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-color: var(--gold-dim);
 }
 
 .wine-card-primary {
   border-left-width: 4px;
-  border-top: 2px solid rgba(197, 165, 90, 0.5);
-  border-right: 1px solid var(--parchment);
-  border-bottom: 1px solid var(--parchment);
+  border-top: 1px solid var(--gold-dim);
   padding: 2rem;
 }
 
@@ -84,7 +75,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .wine-card-info {
@@ -96,29 +87,28 @@
 .wine-card-region {
   font-family: var(--font-heading);
   font-size: 1.4rem;
-  color: var(--oak);
+  color: var(--primary);
   margin: 0;
 }
 
 .wine-card-primary .wine-card-region {
-  font-size: 1.7rem;
+  font-size: 2rem;
 }
 
 .wine-card-country {
-  font-size: 0.9rem;
-  color: var(--slate);
+  font-size: 0.78rem;
+  color: var(--stone-500);
+  font-family: var(--font-heading);
+  font-style: italic;
 }
 
 .wine-card-style {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-  color: var(--wine-deep);
-  background: rgba(114, 47, 55, 0.08);
-  padding: 0.15rem 0.6rem;
-  border-radius: 4px;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+  color: var(--on-surface-variant);
   width: fit-content;
   margin-top: 0.3rem;
 }
@@ -132,18 +122,18 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: var(--wine-deep);
-  color: var(--cream);
+  background: var(--primary-container);
+  color: var(--page-bg);
   flex-shrink: 0;
 }
 
 .wine-card-primary .score-badge {
-  width: 76px;
-  height: 76px;
+  width: 80px;
+  height: 80px;
 }
 
 /* Score badge per wine type */
-.score-badge-red       { background: #722F37; }
+.score-badge-red       { background: var(--wine-red); }
 .score-badge-white     { background: #a07840; }
 .score-badge-rosé      { background: #c26a50; }
 .score-badge-sparkling { background: #6a8ea8; }
@@ -156,56 +146,60 @@
 }
 
 .wine-card-primary .score-number {
-  font-size: 1.7rem;
+  font-size: 1.8rem;
 }
 
 .score-label {
-  font-size: 0.6rem;
-  opacity: 0.7;
+  font-size: 0.55rem;
+  opacity: 0.65;
+  letter-spacing: 0.05em;
 }
 
 /* Card Text */
 .wine-card-text {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--oak);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--on-surface-variant);
   margin-bottom: 0.75rem;
 }
 
 .wine-card-grapes {
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   font-style: italic;
-  color: var(--slate);
+  font-family: var(--font-heading);
+  color: var(--stone-500);
   margin-bottom: 0.5rem;
 }
 
 .wine-card-suggestion {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 500;
-  color: var(--wine-deep);
+  color: var(--primary);
   margin-bottom: 0.5rem;
 }
 
 .wine-card-notable {
-  font-size: 0.85rem;
-  color: var(--slate);
-  border-top: 1px solid var(--parchment);
+  font-size: 0.78rem;
+  color: var(--stone-500);
+  border-top: 1px solid var(--outline-variant);
   padding-top: 0.6rem;
   margin-top: 0.5rem;
 }
 
 .notable-label {
-  font-weight: 600;
-  color: var(--oak);
+  font-weight: 500;
+  color: var(--on-surface-variant);
 }
 
 /* Alternatives */
 .alt-title {
   font-family: var(--font-heading);
-  font-size: 1.3rem;
-  color: var(--cream);
-  opacity: 0.9;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--on-surface-variant);
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
   margin: 2rem 0 1rem;
 }
 
@@ -223,17 +217,15 @@
   font-family: var(--font-heading);
   font-size: 1.55rem;
   font-weight: 700;
-  color: var(--gold);
-  opacity: 0.75;
+  color: var(--outline-variant);
   line-height: 1;
   pointer-events: none;
   letter-spacing: -0.02em;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
 .wine-card-primary .vintage-year-badge {
-  font-size: 2rem;
-  opacity: 0.8;
+  font-size: 2.5rem;
+  opacity: 0.5;
   top: 16px;
   right: 18px;
 }
@@ -249,7 +241,6 @@
 .wine-pairing-icon {
   font-size: 1rem;
   line-height: 1;
-  filter: saturate(1.1);
   cursor: default;
 }
 
@@ -258,42 +249,42 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 0.2rem 0.6rem;
-  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.15rem 0.5rem;
   margin-top: 0.4rem;
   width: fit-content;
   letter-spacing: 0.02em;
 }
 
-.dw-young    { background: rgba(74, 160, 74, 0.12); color: #2d7a2d; }
-.dw-peak     { background: rgba(197, 165, 90, 0.15); color: #7a6020; }
-.dw-mature   { background: rgba(160, 120, 60, 0.12); color: #6e4e1a; }
-.dw-past     { background: rgba(180, 60, 60, 0.1);  color: #9a3a3a; }
-.dw-cellar   { background: rgba(100, 120, 180, 0.12); color: #3a4a8a; }
+.dw-young    { background: rgba(90, 140, 90, 0.08); color: #3a6a3a; }
+.dw-peak     { background: rgba(233, 193, 118, 0.12); color: #7a6020; }
+.dw-mature   { background: rgba(160, 120, 60, 0.08); color: #6e4e1a; }
+.dw-past     { background: rgba(175, 43, 62, 0.08);  color: var(--secondary); }
+.dw-cellar   { background: rgba(100, 120, 180, 0.08); color: #3a4a8a; }
 
 /* ── Vivino Link ────────────────────────────────── */
 .vivino-link {
   display: inline-block;
   margin-top: 0.75rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--wine-deep);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
   text-decoration: none;
-  padding: 0.35rem 0.75rem;
-  border-radius: 6px;
-  background: rgba(114, 47, 55, 0.08);
-  transition: background 0.15s ease, color 0.15s ease;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--outline-variant);
+  transition: color 0.2s, border-color 0.2s;
 }
 
 .vivino-link:hover {
-  background: rgba(114, 47, 55, 0.15);
-  color: #5a1a24;
+  color: var(--secondary);
+  border-color: var(--secondary);
 }
 
 .vivino-link:focus-visible {
-  outline: 2px solid var(--wine-deep);
+  outline: 2px solid var(--gold-dim);
   outline-offset: 2px;
 }
 
@@ -306,7 +297,7 @@
     font-size: 1.2rem;
   }
   .wine-card-primary .wine-card-region {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
   .alt-grid {
     grid-template-columns: 1fr;
@@ -315,6 +306,6 @@
     font-size: 1.2rem;
   }
   .wine-card-primary .vintage-year-badge {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
 }

@@ -67,9 +67,9 @@ const SUGGESTED_VINTAGES = [
 ];
 
 const HOW_IT_WORKS = [
-  { icon: "📅", step: "1", title: "Pick a Year", desc: "Enter any year from 1970–2023" },
-  { icon: "🗺️", step: "2", title: "See the Map", desc: "Explore vintage quality by region" },
-  { icon: "🍷", step: "3", title: "Find Your Wine", desc: "Get a personalised recommendation" },
+  { icon: "1", step: "1", title: "Pick a Year", desc: "Enter any year from 1970 to 2023" },
+  { icon: "2", step: "2", title: "See the Map", desc: "Explore vintage quality by region" },
+  { icon: "3", step: "3", title: "Find Your Wine", desc: "Get a personalised recommendation" },
 ];
 
 function App() {
@@ -206,11 +206,11 @@ function App() {
     <div className="app">
       <header className="hero">
         <div className="hero-content">
-          <div className="hero-badge stagger-in" style={{"--stagger": "0ms"} as React.CSSProperties}>✦ Wine Vintage Explorer ✦</div>
+          <div className="hero-badge stagger-in" style={{"--stagger": "0ms"} as React.CSSProperties}>Wine Vintage Explorer</div>
           <h1 className="hero-title stagger-in" style={{"--stagger": "80ms"} as React.CSSProperties}>VintageMap</h1>
           <p className="hero-subtitle stagger-in" style={{"--stagger": "160ms"} as React.CSSProperties}>
             Every great wine tells the story of its year. Enter a date that
-            matters to you — we'll find the perfect vintage.
+            matters to you, and we'll find the perfect vintage.
           </p>
           <div className="suggested-vintages stagger-in" style={{"--stagger": "240ms"} as React.CSSProperties}>
             {SUGGESTED_VINTAGES.map((v) => (
@@ -235,11 +235,11 @@ function App() {
             disabled={loading}
             title="Try a random great vintage year"
           >
-            ✦ Surprise me
+            Surprise me
           </button>
         </div>
         <div className="hero-divider">
-          <span className="hero-divider-ornament">❧</span>
+          <span className="hero-divider-ornament"></span>
         </div>
       </header>
 
@@ -283,14 +283,14 @@ function App() {
             )}
             {yearReport && (
               <section key={animKey} className={`harvest-report-section${fading ? " section-fading" : ""}`}>
-                <h2 className="harvest-report-title">✦ {yearReport.year} Harvest Report</h2>
+                <h2 className="harvest-report-title">{yearReport.year} Harvest Report</h2>
                 <p className="harvest-report-summary">{yearReport.summary}</p>
 
                 <div className="harvest-columns">
                   {/* Winners */}
                   <div className="harvest-col harvest-winners">
                     <h3 className="harvest-col-title">
-                      🏆 Standout Regions
+                      Standout Regions
                       {yearReport.total_winners > 0 && (
                         <span className="harvest-count">{yearReport.total_winners}</span>
                       )}
@@ -316,7 +316,7 @@ function App() {
                   {/* Strugglers */}
                   <div className="harvest-col harvest-strugglers">
                     <h3 className="harvest-col-title">
-                      ⚠️ Difficult Conditions
+                      Difficult Conditions
                       {yearReport.total_strugglers > 0 && (
                         <span className="harvest-count harvest-count-struggle">{yearReport.total_strugglers}</span>
                       )}
@@ -395,8 +395,8 @@ function App() {
                 )}
               </section>
             ) : null}
-          </div>{/* /results-right */}
-        </div>{/* /results-layout */}
+          </div>
+        </div>
       ) : (
         <section id="map-section" className="explore-placeholder">
           {/* How It Works */}
@@ -414,7 +414,7 @@ function App() {
 
           {/* Featured regions preview */}
           <div className="placeholder-top">
-            <p className="placeholder-label">✦ Featured Regions ✦</p>
+            <p className="placeholder-label">Featured Regions</p>
             <p className="placeholder-scale-note">Scores on a 100-point scale · 90+ Outstanding · 80–89 Excellent</p>
             <div className="featured-regions-grid">
               {FEATURED_REGIONS.map((r, i) => (
@@ -449,7 +449,7 @@ function App() {
           </div>
 
           <div className="explore-placeholder-inner">
-            <span className="explore-placeholder-icon">🍷</span>
+            <span className="explore-placeholder-icon"></span>
             <p className="explore-placeholder-text">
               Enter a year above to explore wine regions from that vintage.
             </p>
@@ -482,7 +482,7 @@ function App() {
       )}
 
       <footer className="footer">
-        <div className="footer-ornament">❧</div>
+        <div className="footer-ornament">---</div>
         <p>
           VintageMap, wine vintage data sourced from public reviews and
           expert consensus. Boundaries are approximate.

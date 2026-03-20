@@ -20,52 +20,59 @@
 }
 
 .field label {
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  opacity: 0.8;
+  letter-spacing: 0.2em;
+  color: var(--stone-500);
   font-weight: 500;
 }
 
 .field input,
 .field select {
-  padding: 0.7rem 1rem;
-  border: 2px solid rgba(255, 248, 240, 0.3);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--cream);
-  font-family: var(--font-body);
-  font-size: 1.05rem;
+  padding: 0.65rem 1rem;
+  border: none;
+  border-bottom: 1px solid var(--outline);
+  background: transparent;
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
   min-width: 180px;
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color 0.2s;
 }
 
 .field input::placeholder {
-  color: rgba(255, 248, 240, 0.4);
+  color: var(--outline-variant);
+  font-weight: 300;
 }
 
 .field input:focus,
 .field select:focus {
   outline: none;
-  border-color: var(--gold);
-  background: rgba(255, 255, 255, 0.18);
-  box-shadow: 0 0 0 3px rgba(197, 165, 90, 0.2), 0 2px 8px rgba(0,0,0,0.1);
+  border-color: var(--primary);
+}
+
+.field select {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  cursor: pointer;
 }
 
 .field select option {
-  background: var(--wine-deep);
-  color: var(--cream);
+  background: var(--page-bg);
+  color: var(--on-surface);
 }
 
 .field-error {
-  font-size: 0.8rem;
-  color: #ffb4b4;
+  font-size: 0.78rem;
+  color: var(--secondary);
 }
 
 .field-legendary-hint {
-  font-size: 0.78rem;
-  color: #c9a84c;
+  font-size: 0.7rem;
+  color: var(--gold-dim);
   font-weight: 500;
+  font-family: var(--font-heading);
+  font-style: italic;
   animation: hintFade 0.3s ease-out;
 }
 
@@ -75,59 +82,49 @@
 }
 
 .field-hint {
-  font-size: 0.72rem;
-  opacity: 0.6;
+  font-size: 0.6rem;
+  color: var(--stone-400);
   text-transform: none;
   letter-spacing: 0.02em;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .submit-btn {
-  padding: 0.9rem 2.5rem;
-  background: linear-gradient(135deg, #c5a55a 0%, #d4b96e 50%, #b8923e 100%);
-  color: var(--oak);
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 600;
+  padding: 0.85rem 2.5rem;
+  background: var(--primary-container);
+  color: var(--page-bg);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
   border: none;
-  border-radius: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  transition: opacity 0.2s;
   min-width: 240px;
-  box-shadow: 0 2px 12px rgba(197, 165, 90, 0.35), 0 1px 3px rgba(0,0,0,0.2);
-  letter-spacing: 0.02em;
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: linear-gradient(135deg, #d4b96e 0%, #e0c882 50%, #c5a55a 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(197, 165, 90, 0.5), 0 2px 6px rgba(0,0,0,0.2);
-}
-
-.submit-btn:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 1px 6px rgba(197, 165, 90, 0.3);
+  opacity: 0.88;
 }
 
 .submit-btn:disabled {
-  opacity: 0.7;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .spinner {
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(74, 44, 42, 0.3);
-  border-top-color: var(--oak);
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(251, 249, 244, 0.3);
+  border-top-color: var(--page-bg);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 /* Remove number input spinners */
