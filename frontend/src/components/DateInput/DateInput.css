@@ -92,7 +92,7 @@
 .submit-btn {
   padding: 0.85rem 2.5rem;
   background: var(--primary-container);
-  color: var(--page-bg);
+  color: var(--on-surface);
   font-family: var(--font-body);
   font-size: 0.7rem;
   font-weight: 500;
@@ -117,8 +117,8 @@
   display: inline-block;
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(251, 249, 244, 0.3);
-  border-top-color: var(--page-bg);
+  border: 2px solid rgba(213, 202, 192, 0.3);
+  border-top-color: var(--on-surface);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
 }

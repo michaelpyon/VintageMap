@@ -7,22 +7,22 @@
 }
 
 :root {
-  /* Palette */
-  --page-bg: #fbf9f4;
-  --surface-low: #f5f3ee;
-  --surface-container: #f0eee9;
-  --surface-high: #eae8e3;
-  --primary: #2a0002;
-  --primary-container: #4a0e0e;
-  --secondary: #af2b3e;
+  /* Palette — warm dark */
+  --page-bg: #171311;
+  --surface-low: #1e1a17;
+  --surface-container: #252120;
+  --surface-high: #2e2926;
+  --primary: #e8ddd0;
+  --primary-container: #3a1a1a;
+  --secondary: #d4636f;
   --gold: #e9c176;
   --gold-dim: #c5a55a;
-  --outline: #877270;
-  --outline-variant: #dac1bf;
-  --on-surface: #1b1c19;
-  --on-surface-variant: #544341;
-  --stone-400: #a8a29e;
-  --stone-500: #78716c;
+  --outline: #5a4e4c;
+  --outline-variant: #3a3230;
+  --on-surface: #d5cac0;
+  --on-surface-variant: #a89a90;
+  --stone-400: #706560;
+  --stone-500: #8a7e78;
 
   /* Wine type colors */
   --wine-red: #722F37;
@@ -66,8 +66,8 @@ h3 {
 
 /* Selection */
 ::selection {
-  background: rgba(233, 193, 118, 0.3);
-  color: var(--primary);
+  background: rgba(233, 193, 118, 0.25);
+  color: var(--on-surface);
 }
 
 /* Custom scrollbar */

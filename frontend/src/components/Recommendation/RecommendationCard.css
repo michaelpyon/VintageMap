@@ -33,7 +33,7 @@
 
 .qt-outstanding { color: var(--gold-dim); }
 .qt-excellent   { color: var(--gold-dim); }
-.qt-good        { color: #5a7a5a; }
+.qt-good        { color: #7aaa7a; }
 .qt-average     { color: var(--stone-500); }
 .qt-poor        { color: var(--secondary); }
 
@@ -123,7 +123,7 @@
   height: 64px;
   border-radius: 50%;
   background: var(--primary-container);
-  color: var(--page-bg);
+  color: #f0e8de;
   flex-shrink: 0;
 }
 
@@ -257,11 +257,11 @@
   letter-spacing: 0.02em;
 }
 
-.dw-young    { background: rgba(90, 140, 90, 0.08); color: #3a6a3a; }
-.dw-peak     { background: rgba(233, 193, 118, 0.12); color: #7a6020; }
-.dw-mature   { background: rgba(160, 120, 60, 0.08); color: #6e4e1a; }
-.dw-past     { background: rgba(175, 43, 62, 0.08);  color: var(--secondary); }
-.dw-cellar   { background: rgba(100, 120, 180, 0.08); color: #3a4a8a; }
+.dw-young    { background: rgba(90, 160, 90, 0.12); color: #7aba7a; }
+.dw-peak     { background: rgba(233, 193, 118, 0.15); color: var(--gold); }
+.dw-mature   { background: rgba(180, 140, 80, 0.12); color: #c0a060; }
+.dw-past     { background: rgba(175, 43, 62, 0.12);  color: var(--secondary); }
+.dw-cellar   { background: rgba(100, 130, 200, 0.12); color: #8aa0d0; }
 
 /* ── Vivino Link ────────────────────────────────── */
 .vivino-link {

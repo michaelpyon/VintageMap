@@ -271,7 +271,7 @@ button.featured-region-card {
   align-items: center;
   justify-content: center;
   background: var(--primary-container);
-  color: var(--page-bg);
+  color: #f0e8de;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -355,10 +355,10 @@ button.featured-region-card {
   background: var(--surface-container);
 }
 
-.wine-badge-red     { color: var(--wine-red); background: rgba(114,47,55,0.06); }
-.wine-badge-white   { color: #8a6520; background: rgba(200,169,110,0.1); }
-.wine-badge-rosé    { color: #b85a3a; background: rgba(232,147,106,0.1); }
-.wine-badge-sparkling { color: #4a7a96; background: rgba(157,184,201,0.12); }
+.wine-badge-red     { color: #c07080; background: rgba(114,47,55,0.15); }
+.wine-badge-white   { color: #c8a860; background: rgba(200,169,110,0.15); }
+.wine-badge-rosé    { color: #d08060; background: rgba(232,147,106,0.12); }
+.wine-badge-sparkling { color: #7ab0c8; background: rgba(157,184,201,0.15); }
 
 /* Center CTA in placeholder */
 .explore-placeholder-inner {
@@ -961,7 +961,7 @@ button.featured-region-card {
 }
 
 .harvest-empty-positive {
-  color: #5a7a5a;
+  color: #7aaa7a;
 }
 
 /* ── Side-by-side Results Layout ──────────────────── */
