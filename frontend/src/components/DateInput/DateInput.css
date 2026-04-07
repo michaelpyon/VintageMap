@@ -117,7 +117,7 @@
   display: inline-block;
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(213, 202, 192, 0.3);
+  border: 2px solid color-mix(in srgb, var(--on-surface) 30%, transparent);
   border-top-color: var(--on-surface);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;

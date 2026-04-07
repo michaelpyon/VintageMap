@@ -23,14 +23,19 @@ const TILE_URL =
 const TILE_ATTR =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>';
 
+/** Resolve a CSS custom property to its computed hex value */
+function cssVar(name: string): string {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
 function getColor(score: number): string {
-  if (score >= 90) return "#722F37";
-  if (score >= 80) return "#A0522D";
-  if (score >= 70) return "#CD853F";
-  if (score >= 60) return "#DEB887";
-  if (score >= 50) return "#D2B48C";
-  if (score > 0) return "#C8B89A";
-  return "#AAAAAA";
+  if (score >= 90) return cssVar("--heatmap-outstanding");
+  if (score >= 80) return cssVar("--heatmap-excellent");
+  if (score >= 70) return cssVar("--heatmap-good");
+  if (score >= 60) return cssVar("--heatmap-average");
+  if (score >= 50) return cssVar("--heatmap-below-avg");
+  if (score > 0) return cssVar("--heatmap-poor");
+  return cssVar("--heatmap-no-data");
 }
 
 function tierLabel(tier: string): string {
@@ -215,7 +220,8 @@ function RegionPolygons({
           });
         });
         layer.on("mouseover", () => {
-          (layer as L.Path).setStyle({ fillColor: "#722F37", fillOpacity: 0.12, color: "#722F37", weight: 1 });
+          const hoverColor = cssVar("--wine-red");
+          (layer as L.Path).setStyle({ fillColor: hoverColor, fillOpacity: 0.12, color: hoverColor, weight: 1 });
         });
         layer.on("mouseout", () => {
           (layer as L.Path).setStyle({ fillColor: "transparent", fillOpacity: 0.08, color: "transparent", weight: 1 });

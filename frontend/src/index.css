@@ -30,6 +30,39 @@
   --wine-rose: #E8936A;
   --wine-sparkling: #9DB8C9;
 
+  /* Wine type accent variants (lighter, for text on dark bg) */
+  --wine-white-accent: #a07840;
+  --wine-rose-accent: #c26a50;
+  --wine-sparkling-accent: #6a8ea8;
+
+  /* Wine badge text colors (softer for inline badges) */
+  --wine-badge-red: #c07080;
+  --wine-badge-white: #c8a860;
+  --wine-badge-rose: #d08060;
+  --wine-badge-sparkling: #7ab0c8;
+
+  /* Heatmap scale — vintage quality scores */
+  --heatmap-outstanding: #722F37;
+  --heatmap-excellent: #A0522D;
+  --heatmap-good: #CD853F;
+  --heatmap-average: #DEB887;
+  --heatmap-below-avg: #D2B48C;
+  --heatmap-poor: #C8B89A;
+  --heatmap-no-data: #AAAAAA;
+
+  /* Semantic colors */
+  --color-positive: #7aaa7a;
+  --color-on-badge: #f0e8de;
+  --color-error: #93000a;
+
+  /* Drinking window accent colors */
+  --dw-mature: #c0a060;
+  --dw-cellar: #8aa0d0;
+
+  /* Overlay background (dark glass) */
+  --overlay-bg: rgba(30, 26, 23, 0.95);
+  --overlay-bg-strong: rgba(30, 26, 23, 0.98);
+
   /* Typography */
   --font-heading: "Newsreader", Georgia, serif;
   --font-body: "Work Sans", "Segoe UI", sans-serif;
