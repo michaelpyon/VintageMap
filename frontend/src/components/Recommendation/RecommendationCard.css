@@ -33,7 +33,7 @@
 
 .qt-outstanding { color: var(--gold-dim); }
 .qt-excellent   { color: var(--gold-dim); }
-.qt-good        { color: #7aaa7a; }
+.qt-good        { color: var(--color-positive); }
 .qt-average     { color: var(--stone-500); }
 .qt-poor        { color: var(--secondary); }
 
@@ -123,7 +123,7 @@
   height: 64px;
   border-radius: 50%;
   background: var(--primary-container);
-  color: #f0e8de;
+  color: var(--color-on-badge);
   flex-shrink: 0;
 }
 
@@ -134,9 +134,9 @@
 
 /* Score badge per wine type */
 .score-badge-red       { background: var(--wine-red); }
-.score-badge-white     { background: #a07840; }
-.score-badge-rosé      { background: #c26a50; }
-.score-badge-sparkling { background: #6a8ea8; }
+.score-badge-white     { background: var(--wine-white-accent); }
+.score-badge-rosé      { background: var(--wine-rose-accent); }
+.score-badge-sparkling { background: var(--wine-sparkling-accent); }
 
 .score-number {
   font-family: var(--font-heading);
@@ -257,11 +257,11 @@
   letter-spacing: 0.02em;
 }
 
-.dw-young    { background: rgba(90, 160, 90, 0.12); color: #7aba7a; }
+.dw-young    { background: rgba(90, 160, 90, 0.12); color: var(--color-positive); }
 .dw-peak     { background: rgba(233, 193, 118, 0.15); color: var(--gold); }
-.dw-mature   { background: rgba(180, 140, 80, 0.12); color: #c0a060; }
+.dw-mature   { background: rgba(180, 140, 80, 0.12); color: var(--dw-mature); }
 .dw-past     { background: rgba(175, 43, 62, 0.12);  color: var(--secondary); }
-.dw-cellar   { background: rgba(100, 130, 200, 0.12); color: #8aa0d0; }
+.dw-cellar   { background: rgba(100, 130, 200, 0.12); color: var(--dw-cellar); }
 
 /* ── Vivino Link ────────────────────────────────── */
 .vivino-link {
