@@ -267,7 +267,7 @@ function App() {
                       )}
                     </h3>
                     {yearReport.winners.length === 0 ? (
-                      <p className="harvest-empty">No region scored 90+ this vintage — a difficult year across the board.</p>
+                      <p className="harvest-empty">No region scored 90+ this vintage. A difficult year across the board.</p>
                     ) : (
                       <ul className="harvest-list">
                         {yearReport.winners.map((r: HarvestReportRegion) => (
@@ -293,7 +293,7 @@ function App() {
                       )}
                     </h3>
                     {yearReport.strugglers.length === 0 ? (
-                      <p className="harvest-empty harvest-empty-positive">Every region performed solidly — no major struggles this vintage.</p>
+                      <p className="harvest-empty harvest-empty-positive">Every region performed solidly. No major struggles this vintage.</p>
                     ) : (
                       <ul className="harvest-list">
                         {yearReport.strugglers.map((r: HarvestReportRegion) => (

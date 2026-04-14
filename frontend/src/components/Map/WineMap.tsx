@@ -106,9 +106,9 @@ function FitWorld({ trigger }: { trigger: number | null }) {
 /** Human label for drinking window values */
 function drinkingWindowText(dw: string): string {
   const map: Record<string, string> = {
-    young:     "🟢 Drink Now — Still Young",
-    at_peak:   "⭐ At Peak — Best Time to Drink",
-    mature:    "🍂 Mature — Still Enjoyable",
+    young:     "🟢 Drink Now: Still Young",
+    at_peak:   "⭐ At Peak: Best Time to Drink",
+    mature:    "🍂 Mature: Still Enjoyable",
     past_peak: "⚠️ Past Peak",
     cellaring: "🕐 Needs More Cellaring",
   };
