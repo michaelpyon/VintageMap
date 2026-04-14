@@ -29,8 +29,8 @@ function wineTypeClass(wineStyle: string): string {
 function drinkingWindowLabel(dw: string): { label: string; icon: string; cls: string } {
   switch (dw) {
     case "young": return { label: "Drink Now", icon: "🟢", cls: "dw-young" };
-    case "at_peak": return { label: "At Peak — Drink Now", icon: "⭐", cls: "dw-peak" };
-    case "mature": return { label: "Mature — Still Good", icon: "🍂", cls: "dw-mature" };
+    case "at_peak": return { label: "At Peak: Drink Now", icon: "⭐", cls: "dw-peak" };
+    case "mature": return { label: "Mature: Still Good", icon: "🍂", cls: "dw-mature" };
     case "past_peak": return { label: "Past Peak", icon: "⚠️", cls: "dw-past" };
     case "cellaring": return { label: "Needs Cellaring", icon: "🕐", cls: "dw-cellar" };
     default: return { label: dw.replace(/_/g, " "), icon: "🍷", cls: "" };

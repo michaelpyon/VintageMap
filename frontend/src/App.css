@@ -546,7 +546,7 @@ button.featured-region-card {
   border: 1px solid var(--outline-variant);
   background: transparent;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: border-color 0.2s, background 0.2s;
   white-space: nowrap;
   font-family: inherit;
 }
@@ -610,7 +610,7 @@ button.featured-region-card {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .surprise-btn:hover:not(:disabled) {
@@ -647,7 +647,7 @@ button.featured-region-card {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .save-btn:hover {
@@ -1096,4 +1096,17 @@ button.featured-region-card {
   .how-it-works {
     display: none;
   }
+}
+
+/* Focus-visible states for keyboard navigation */
+.surprise-btn:focus-visible,
+.share-btn:focus-visible,
+.save-btn:focus-visible {
+  outline: 2px solid var(--gold-dim);
+  outline-offset: 2px;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--gold-dim);
+  outline-offset: 2px;
 }
