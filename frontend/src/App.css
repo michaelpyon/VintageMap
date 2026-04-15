@@ -271,7 +271,7 @@ button.featured-region-card {
   align-items: center;
   justify-content: center;
   background: var(--primary-container);
-  color: var(--color-on-badge);
+  color: #f0e8de;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -294,9 +294,9 @@ button.featured-region-card {
 
 /* Score badge per wine type */
 .wine-score-red      { background: var(--wine-red); }
-.wine-score-white    { background: var(--wine-white-accent); }
-.wine-score-rosé     { background: var(--wine-rose-accent); }
-.wine-score-sparkling { background: var(--wine-sparkling-accent); }
+.wine-score-white    { background: #a07840; }
+.wine-score-rosé     { background: #c26a50; }
+.wine-score-sparkling { background: #6a8ea8; }
 
 .placeholder-scale-note {
   text-align: center;
@@ -326,9 +326,9 @@ button.featured-region-card {
 
 .wtl-item { font-weight: 500; }
 .wtl-red      { color: var(--wine-red); }
-.wtl-white    { color: var(--wine-white-accent); }
+.wtl-white    { color: #a07840; }
 .wtl-rosé     { color: var(--wine-rose); }
-.wtl-sparkling { color: var(--wine-sparkling-accent); }
+.wtl-sparkling { color: #6a8ea8; }
 
 .fr-name {
   font-family: var(--font-heading);
@@ -355,10 +355,10 @@ button.featured-region-card {
   background: var(--surface-container);
 }
 
-.wine-badge-red     { color: var(--wine-badge-red); background: rgba(114,47,55,0.15); }
-.wine-badge-white   { color: var(--wine-badge-white); background: rgba(200,169,110,0.15); }
-.wine-badge-rosé    { color: var(--wine-badge-rose); background: rgba(232,147,106,0.12); }
-.wine-badge-sparkling { color: var(--wine-badge-sparkling); background: rgba(157,184,201,0.15); }
+.wine-badge-red     { color: #c07080; background: rgba(114,47,55,0.15); }
+.wine-badge-white   { color: #c8a860; background: rgba(200,169,110,0.15); }
+.wine-badge-rosé    { color: #d08060; background: rgba(232,147,106,0.12); }
+.wine-badge-sparkling { color: #7ab0c8; background: rgba(157,184,201,0.15); }
 
 /* Center CTA in placeholder */
 .explore-placeholder-inner {
@@ -400,7 +400,7 @@ button.featured-region-card {
 .error-banner {
   background: rgba(186, 26, 26, 0.08);
   border: 1px solid rgba(186, 26, 26, 0.2);
-  color: var(--color-error);
+  color: #93000a;
   padding: 1rem 2rem;
   text-align: center;
   font-size: 0.95rem;
@@ -546,7 +546,7 @@ button.featured-region-card {
   border: 1px solid var(--outline-variant);
   background: transparent;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
   white-space: nowrap;
   font-family: inherit;
 }
@@ -610,7 +610,7 @@ button.featured-region-card {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
 .surprise-btn:hover:not(:disabled) {
@@ -647,7 +647,7 @@ button.featured-region-card {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
 .save-btn:hover {
@@ -961,7 +961,7 @@ button.featured-region-card {
 }
 
 .harvest-empty-positive {
-  color: var(--color-positive);
+  color: #7aaa7a;
 }
 
 /* ── Side-by-side Results Layout ──────────────────── */
@@ -1096,17 +1096,4 @@ button.featured-region-card {
   .how-it-works {
     display: none;
   }
-}
-
-/* Focus-visible states for keyboard navigation */
-.surprise-btn:focus-visible,
-.share-btn:focus-visible,
-.save-btn:focus-visible {
-  outline: 2px solid var(--gold-dim);
-  outline-offset: 2px;
-}
-
-a:focus-visible {
-  outline: 2px solid var(--gold-dim);
-  outline-offset: 2px;
 }
